@@ -26,6 +26,8 @@
 **步骤**：
 
 1. 启动本地服务器（任选其一）：
+   Windows：文件夹空白处 Shift + 右键 → 在此处打开 PowerShell / CMD
+   Mac/Linux：终端 cd 进入项目根目录（能看到 server.js 的文件夹）
 
    有 Node.js（推荐，项目自带启动脚本，零依赖）：
 
@@ -34,13 +36,17 @@
    ```
 
    有 Python：
+   终端切换到项目里的 src 目录
 
    ```bash
    cd src
-   python -m http.server 8000
    ```
-
-2. 用浏览器打开 <http://localhost:8000>
+   启动 Python 简易服务
+    ```bash
+    python -m http.server 8000
+    ```
+  
+3. 用浏览器打开 <http://localhost:8000>
 
 > 说明：页面使用了 ES 模块（`<script type="module">`），直接双击 `index.html` 打开会被浏览器安全策略拦截，因此需要通过本地服务器访问。
 
