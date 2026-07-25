@@ -1,0 +1,14 @@
+{
+  "name": "mbti-cocktail",
+  "version": "1.0.0",
+  "description": "基于MBTI人格类型的智能鸡尾酒推荐桌面应用",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "serve": "node server.js"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBTI Cocktail</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ==================== 首页 ==================== -->
+    <div id="page-home" class="page active">
+      <div class="home-hero">
+        <div class="home-logo">🍸</div>
+        <h1 class="home-title">MBTI <span class="gold">&times;</span> Cocktail</h1>
+        <p class="home-subtitle">你的性格，你的酒</p>
+        <p class="home-desc">拖动滑块，调节每个维度的倾向，发现属于你的那杯酒</p>
+      </div>
+
+      <!-- 维度滑块 -->
+      <div class="sliders-section">
+        <div class="slider-group">
+          <div class="slider-labels">
+            <span class="slider-label-left">E 外向</span>
+            <span class="slider-label-right">I 内向</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" min="0" max="100" value="50" class="slider-input" id="slider-EI" oninput="onSliderChange()">
+            <div class="slider-fill" id="slider-fill-EI"></div>
+          </div>
+          <div class="slider-values">
+            <span id="val-E">50%</span>
+            <span id="val-I">50%</span>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-labels">
+            <span class="slider-label-left">S 实感</span>
+            <span class="slider-label-right">N 直觉</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" min="0" max="100" value="50" class="slider-input" id="slider-SN" oninput="onSliderChange()">
+            <div class="slider-fill" id="slider-fill-SN"></div>
+          </div>
+          <div class="slider-values">
+            <span id="val-S">50%</span>
+            <span id="val-N">50%</span>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-labels">
+            <span class="slider-label-left">T 思维</span>
+            <span class="slider-label-right">F 情感</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" min="0" max="100" value="50" class="slider-input" id="slider-TF" oninput="onSliderChange()">
+            <div class="slider-fill" id="slider-fill-TF"></div>
+          </div>
+          <div class="slider-values">
+            <span id="val-T">50%</span>
+            <span id="val-F">50%</span>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-labels">
+            <span class="slider-label-left">J 判断</span>
+            <span class="slider-label-right">P 感知</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" min="0" max="100" value="50" class="slider-input" id="slider-JP" oninput="onSliderChange()">
+            <div class="slider-fill" id="slider-fill-JP"></div>
+          </div>
+          <div class="slider-values">
+            <span id="val-J">50%</span>
+            <span id="val-P">50%</span>
+          </div>
+        </div>
+
+        <div class="mbti-preview" id="mbti-preview">----</div>
+      </div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary btn-large" onclick="startRecommend()">
+          <span class="btn-icon">🍹</span> 查看我的鸡尾酒
+        </button>
+        <button class="btn btn-outline btn-large" onclick="toggleTypePicker()">
+          <span class="btn-icon">🎯</span> 快速选择类型
+        </button>
+      </div>
+      <div id="type-picker" class="type-picker hidden">
+        <p class="picker-label">选择 MBTI 类型（倾向默认 50%）</p>
+        <div class="type-grid" id="type-grid"></div>
+      </div>
+    </div>
+
+    <!-- ==================== 结果页 ==================== -->
+    <div id="page-result" class="page">
+      <div class="result-header">
+        <button class="btn-back" onclick="navigate('home')">← 返回</button>
+      </div>
+      <div class="result-hero" id="result-hero"></div>
+
+      <!-- 维度强度条 -->
+      <div class="intensity-bars" id="intensity-bars"></div>
+
+      <div class="result-section">
+        <h3 class="section-title">🍹 为你推荐的鸡尾酒</h3>
+        <div class="cocktail-list" id="result-list"></div>
+      </div>
+
+      <!-- AI 特调区域 -->
+      <div class="result-section ai-section">
+        <h3 class="section-title">✨ AI 特调</h3>
+        <p class="ai-hint">基于你的维度倾向，AI 为你独创一款专属配方</p>
+        <div id="ai-result"></div>
+        <button class="btn btn-outline btn-large" onclick="regenerateAI()" id="btn-regenerate" style="margin-top:12px">
+          🔄 换一款
+        </button>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-outline" onclick="navigate('home')">🔄 重新调整</button>
+        <button class="btn btn-outline" onclick="navigate('wiki')">📚 浏览百科</button>
+      </div>
+    </div>
+
+    <!-- ==================== 详情页 ==================== -->
+    <div id="page-detail" class="page">
+      <div class="detail-header">
+        <button class="btn-back" onclick="goBack()">← 返回</button>
+        <button class="btn-fav" id="detail-fav-btn" onclick="toggleDetailFav()">♡</button>
+      </div>
+      <div id="detail-content"></div>
+    </div>
+
+    <!-- ==================== 百科页 ==================== -->
+    <div id="page-wiki" class="page">
+      <div class="wiki-header">
+        <h2 class="page-title">📚 鸡尾酒百科</h2>
+      </div>
+      <div class="wiki-filters">
+        <input type="text" class="search-input" placeholder="🔍 搜索鸡尾酒..." id="wiki-search" oninput="renderWiki()">
+        <div class="filter-tabs" id="wiki-category-filters"></div>
+        <div class="filter-tabs" id="wiki-method-filters"></div>
+      </div>
+      <div class="cocktail-list" id="wiki-list"></div>
+    </div>
+
+    <!-- ==================== 收藏页 ==================== -->
+    <div id="page-favorites" class="page">
+      <div class="wiki-header">
+        <h2 class="page-title">❤️ 我的收藏</h2>
+      </div>
+      <div id="favorites-list"></div>
+      <div id="favorites-empty" class="empty-state hidden">
+        <div class="empty-icon">🍹</div>
+        <p>还没有收藏任何鸡尾酒</p>
+        <button class="btn btn-outline" onclick="navigate('wiki')">去百科看看</button>
+      </div>
+    </div>
+
+    <!-- ==================== 个人页 ==================== -->
+    <div id="page-profile" class="page">
+      <div class="profile-header-section">
+        <div class="profile-avatar">🍸</div>
+        <h2 class="page-title">MBTI Cocktail</h2>
+        <p class="profile-version">v2.0.0</p>
+      </div>
+      <div class="profile-section" id="profile-mbti"></div>
+      <div class="profile-menu">
+        <div class="menu-item" onclick="navigate('home')">
+          <span class="menu-icon">🎚️</span>
+          <span class="menu-text">调整 MBTI 维度</span>
+          <span class="menu-arrow">›</span>
+        </div>
+        <div class="menu-item" onclick="navigate('wiki')">
+          <span class="menu-icon">📚</span>
+          <span class="menu-text">浏览鸡尾酒百科</span>
+          <span class="menu-arrow">›</span>
+        </div>
+        <div class="menu-item" onclick="navigate('favorites')">
+          <span class="menu-icon">❤️</span>
+          <span class="menu-text">我的收藏</span>
+          <span class="menu-arrow">›</span>
+        </div>
+      </div>
+      <div class="profile-about">
+        <p>基于荣格八维认知功能理论</p>
+        <p>将心理学维度映射到鸡尾酒感官特征</p>
+        <p class="about-small">MBTI Cocktail v2.0 © 2026</p>
+      </div>
+    </div>
+
+    <!-- ==================== 底部导航 ==================== -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" data-route="home" onclick="navigate('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">首页</span>
+      </div>
+      <div class="nav-item" data-route="wiki" onclick="navigate('wiki')">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">百科</span>
+      </div>
+      <div class="nav-item" data-route="favorites" onclick="navigate('favorites')">
+        <span class="nav-icon">❤️</span>
+        <span class="nav-label">收藏</span>
+      </div>
+      <div class="nav-item" data-route="profile" onclick="navigate('profile')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">我的</span>
+      </div>
+    </nav>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
