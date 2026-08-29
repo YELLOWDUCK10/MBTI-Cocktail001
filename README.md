@@ -48,13 +48,13 @@ MBTI-Cocktail/
 │   ├── cocktails.js      # 鸡尾酒数据库（29 款）
 │   ├── mbti-profiles.js  # 16 种 MBTI 人格档案
 │   └── flavor-library.js # 风味素材库（基酒、配料、技法、冲突规则）
-├── dist/                 # 构建产物（gitignore，本地生成）
+├── dist/                 # 构建产物（已随仓库提交）
 │   └── index.html        # 最终单文件，双击即用
 ├── PRD.md                # 产品需求文档（v2.0）
 └── README.md             # 本文件
 ```
 
-> 说明：`dist/` 已在 `.gitignore` 中忽略，克隆仓库后需运行 `node build.js` 生成；或直接向他人分发 `dist/index.html` 文件本身。
+> 说明：`dist/index.html` 已随仓库一起提交，下载代码后无需构建即可直接使用。仅当修改 `src/` 源码后，才需要运行 `node build.js` 重新生成。
 
 ## 数据存储
 
@@ -71,7 +71,7 @@ MBTI-Cocktail/
 ## 常见问题
 
 **Q：`dist/index.html` 不存在？**
-A：在项目根目录运行 `node build.js` 生成，或直接使用他人分发好的 `dist/index.html`。
+A：该文件已随仓库提交。若缺失，在项目根目录运行 `node build.js` 重新生成。
 
 **Q：数据存在哪里？**
 A：浏览器的 `localStorage`，与访问 `index.html` 的路径绑定；换浏览器或换路径会视为不同站点。
