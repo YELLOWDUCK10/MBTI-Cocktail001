@@ -6,7 +6,6 @@
  * 2. AI 鸡尾酒生成模块
  */
 import COCKTAILS from './cocktails.js';
-import { MBTI_QUESTIONS } from './mbti-questions.js';
 import { MBTI_PROFILES } from './mbti-profiles.js';
 import {
   BASE_SPIRITS, ACIDIFIERS, SWEETENERS, MODIFIERS,
@@ -37,7 +36,7 @@ const STRUCTURE_TEMPLATES = {
   'manhattan': { required: ['base','modifier','bitters'], optional: [], method: 'stir', glass: 'coupe' },
   'margarita': { required: ['base','modifier','acid'], optional: [], method: 'shake', glass: 'margarita' },
   'tiki': { required: ['base','acid','sweetener'], optional: ['modifier','mixer'], method: 'shake', glass: 'hurricane' },
-  'cream': { required: ['base','modifier'], optional: ['sweetener'], method: 'build', glass: 'rocks' }
+  'cream': { required: ['base','modifier'], optional: ['sweetener'], method: 'dry-shake', glass: 'rocks' }
 };
 
 // ==================== 工具函数 ====================
@@ -53,6 +52,9 @@ function pickWeighted(items, weights) {
 
 // ==================== 核心：连续值加权评分 ====================
 
+/** 中性强度（未提供维度强度时使用） */
+const NEUTRAL_INTENSITIES = { E: 50, I: 50, S: 50, N: 50, T: 50, F: 50, J: 50, P: 50 };
+
 /**
  * 计算单款鸡尾酒与 MBTI 类型 + 维度强度的匹配分数
  * @param {Object} cocktail
@@ -62,11 +64,7 @@ function pickWeighted(items, weights) {
  */
 export function calculateMatchScore(cocktail, mbtiType, intensities = null) {
   const dims = parseType(mbtiType);
-
-  // 如果没有强度数据，回退到旧二分法
-  if (!intensities) {
-    return calculateMatchScoreBinary(cocktail, dims);
-  }
+  if (!intensities) intensities = NEUTRAL_INTENSITIES;
 
   let score = 0;
 
@@ -139,44 +137,32 @@ function dimensionWeightedScore(dims, intensities, field, scorer) {
   return total / 4;
 }
 
-// 旧版二分法（回退用）
-function calculateMatchScoreBinary(cocktail, dims) {
-  let score = 0;
-  const pairs = [
-    { field: 'baseSpirit', weight: 30, match: (d) => {
-      const p = DIMENSION_PREFERENCE[d].baseSpirit || [];
-      return p.length === 0 ? 0.5 : (p.includes(cocktail.baseSpirit) ? 1 : 0);
-    }},
-    { field: 'structure', weight: 25, match: (d) => {
-      const p = DIMENSION_PREFERENCE[d].structure || [];
-      return p.length === 0 ? 0.5 : (p.includes(cocktail.structure) ? 1 : 0);
-    }},
-    { field: 'flavor', weight: 25, match: (d) => {
-      const p = DIMENSION_PREFERENCE[d].flavor || [];
-      if (p.length === 0) return 0.5;
-      const cf = cocktail.flavorNotes || [];
-      return Math.min(p.filter(f => cf.some(c => c.includes(f) || f.includes(c))).length / p.length, 1);
-    }},
-    { field: 'body', weight: 10, match: (d) => {
-      const ps = DIMENSION_PREFERENCE[d].strength, sp = DIMENSION_PREFERENCE[d].sweetness;
-      let ds = 0, c = 0;
-      if (ps?.length) { c++; if (ps.includes(cocktail.strength)) ds++; }
-      if (sp?.length) { c++; if (sp.includes(cocktail.sweetness)) ds++; }
-      return c > 0 ? ds / c : 0.5;
-    }},
-    { field: 'scene', weight: 10, match: (d) => {
-      const p = DIMENSION_PREFERENCE[d].scene || [];
-      if (p.length === 0) return 0.5;
-      const cs = cocktail.scene || [];
-      return Math.min(p.filter(s => cs.includes(s)).length / p.length, 1);
-    }}
-  ];
-  for (const { field, weight, match } of pairs) {
-    let dimScore = 0;
-    for (const d of dims) dimScore += match(d);
-    score += (dimScore / dims.length) * weight;
+// ==================== 风味冲突检测 ====================
+
+/** 判断风味集合与已用风味是否存在冲突对（双向检查） */
+function hasFlavorConflict(flavors, usedFlavors) {
+  return FLAVOR_CONFLICTS.some(([a, b]) => {
+    const newA = flavors.some(f => f.includes(a) || a.includes(f));
+    const newB = flavors.some(f => f.includes(b) || b.includes(f));
+    const usedA = usedFlavors.some(uf => uf.includes(a) || a.includes(uf));
+    const usedB = usedFlavors.some(uf => uf.includes(b) || b.includes(uf));
+    return (newA && usedB) || (newB && usedA);
+  });
+}
+
+/**
+ * 从池中挑选一个无冲突配料
+ * @param {Array} pool - 候选池
+ * @param {string[]} usedFlavors - 已用风味
+ * @param {boolean} fallback - 全部冲突时是否退回随机款（必选配料用）
+ * @returns {Object|null} 无冲突返回配料；全冲突且 fallback=false 时返回 null（放弃该配料）
+ */
+function pickNoConflict(pool, usedFlavors, fallback = false) {
+  for (let i = 0; i < 5; i++) {
+    const item = pickRandom(pool);
+    if (!hasFlavorConflict(item.flavors, usedFlavors)) return item;
   }
-  return Math.round(score);
+  return fallback ? pickRandom(pool) : null;
 }
 
 // ==================== AI 鸡尾酒生成 ====================
@@ -237,46 +223,51 @@ function tryGenerate(dims, intensities, mbtiType) {
   const ingredients = [{ name: baseSpirit.name, amount: '45', unit: 'ml', category: 'base' }];
   const usedFlavors = [...baseSpirit.flavors];
 
-  // 酸
+  // 酸（强制冲突重抽，池内替代品充足）
   if (template.required.includes('acid') || (template.optional && template.optional.includes('acid') && Math.random() > 0.4)) {
-    const acid = pickRandom(ACIDIFIERS);
-    ingredients.push({ name: acid.name, amount: acid.amount, unit: acid.unit, category: 'acid' });
-    usedFlavors.push(...acid.flavors);
+    const acid = pickNoConflict(ACIDIFIERS, usedFlavors, true);
+    if (acid) {
+      ingredients.push({ name: acid.name, amount: acid.amount, unit: acid.unit, category: 'acid' });
+      usedFlavors.push(...acid.flavors);
+    }
   }
 
-  // 甜
+  // 甜（强制冲突重抽，池内替代品充足）
   if (template.required.includes('sweetener') || (template.optional && template.optional.includes('sweetener') && Math.random() > 0.5)) {
-    const sweet = pickRandom(SWEETENERS);
-    ingredients.push({ name: sweet.name, amount: sweet.amount, unit: sweet.unit, category: 'sweetener' });
-    usedFlavors.push(...sweet.flavors);
+    const sweet = pickNoConflict(SWEETENERS, usedFlavors, true);
+    if (sweet) {
+      ingredients.push({ name: sweet.name, amount: sweet.amount, unit: sweet.unit, category: 'sweetener' });
+      usedFlavors.push(...sweet.flavors);
+    }
   }
 
-  // 风味剂
+  // 风味剂（强制冲突重抽，最多试 5 个，仍冲突则放弃该配料）
   if (template.required.includes('modifier') || (template.optional && template.optional.includes('modifier') && Math.random() > 0.4)) {
-    const mod = pickRandom(MODIFIERS);
-    // 风味冲突检测
-    const conflict = FLAVOR_CONFLICTS.some(([a,b]) =>
-      mod.flavors.some(f => f.includes(a) || a.includes(f)) &&
-      usedFlavors.some(uf => uf.includes(b) || b.includes(uf))
-    );
-    if (!conflict || Math.random() > 0.7) {
+    const mod = template.required.includes('modifier')
+      ? pickNoConflict(MODIFIERS, usedFlavors, true)
+      : pickNoConflict(MODIFIERS, usedFlavors, false);
+    if (mod) {
       ingredients.push({ name: mod.name, amount: mod.amount, unit: mod.unit, category: 'modifier' });
       usedFlavors.push(...mod.flavors);
     }
   }
 
-  // 苦精
+  // 苦精（必选配料，全冲突时退回随机款保证结构完整）
   if (template.required.includes('bitters')) {
-    const bitter = pickRandom(BITTERS_SPICES);
+    const bitter = pickNoConflict(BITTERS_SPICES, usedFlavors, true);
     ingredients.push({ name: bitter.name, amount: bitter.amount, unit: bitter.unit, category: 'modifier' });
     usedFlavors.push(...bitter.flavors);
   }
 
   // 碳酸/混合剂
   if (template.required.includes('mixer') || (template.optional && template.optional.includes('mixer') && Math.random() > 0.5)) {
-    const mixer = pickRandom(MIXERS);
-    ingredients.push({ name: mixer.name, amount: mixer.amount, unit: mixer.unit, category: 'mixer' });
-    usedFlavors.push(...mixer.flavors);
+    const mixer = template.required.includes('mixer')
+      ? pickNoConflict(MIXERS, usedFlavors, true)
+      : pickNoConflict(MIXERS, usedFlavors, false);
+    if (mixer) {
+      ingredients.push({ name: mixer.name, amount: mixer.amount, unit: mixer.unit, category: 'mixer' });
+      usedFlavors.push(...mixer.flavors);
+    }
   }
 
   // 4. 装饰
@@ -346,54 +337,30 @@ function generateName(mbtiType, flavorNotes, structure) {
   return title + flavorWord + suffix;
 }
 
-// ==================== 对外 API（保持兼容） ====================
-
-export function calculateMBTI(scores) {
-  return [
-    (scores.E||0) >= (scores.I||0) ? 'E' : 'I',
-    (scores.S||0) >= (scores.N||0) ? 'S' : 'N',
-    (scores.T||0) >= (scores.F||0) ? 'T' : 'F',
-    (scores.J||0) >= (scores.P||0) ? 'J' : 'P'
-  ].join('');
-}
-
-export function calculateScoresFromAnswers(answers) {
-  const scores = { E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0 };
-  answers.forEach(a => { if (a.value && scores.hasOwnProperty(a.value)) scores[a.value]++; });
-  return scores;
-}
+// ==================== 对外 API ====================
 
 export function getRecommendations(mbtiType, options = {}) {
   const intensities = options.intensities || null;
   const scored = COCKTAILS.map(cocktail => {
     const algorithmScore = calculateMatchScore(cocktail, mbtiType, intensities);
     const exactMatch = cocktail.mbtiMatch && cocktail.mbtiMatch.includes(mbtiType);
-    return { ...cocktail, _score: Math.round(algorithmScore * (exactMatch ? 1.2 : 1.0)), _exact: exactMatch };
+    return { ...cocktail, _score: Math.min(99, Math.round(algorithmScore * (exactMatch ? 1.2 : 1.0))), _exact: exactMatch };
   });
 
-  const valid = scored.filter(c => c._score > 0).sort((a,b) => b._score - a._score);
-  const top = valid.slice(0, 5);
-
-  return top.map(({ _score, _exact, ...c }) => c);
+  // 全量已排序列表（分数降序，平分时 rating 高者在前），前端自行分页展示
+  return scored
+    .filter(c => c._score > 0)
+    .sort((a, b) => (b._score - a._score) || ((b.rating || 0) - (a.rating || 0)));
 }
 
 export function getProfile(mbtiType) { return MBTI_PROFILES[mbtiType] || null; }
-export function getQuestions() { return MBTI_QUESTIONS; }
 export function getAllMBTITypes() { return Object.keys(MBTI_PROFILES); }
-
-export function getCocktailsByMethod() {
-  const g = {};
-  COCKTAILS.forEach(c => { const m = c.method||'build'; if (!g[m]) g[m]=[]; g[m].push(c); });
-  return g;
-}
 
 export function getAllMethods() {
   return Object.entries(METHODS).map(([method, info]) => ({ method, label: `${info.emoji} ${info.label}` }));
 }
 
 export default {
-  calculateMBTI, calculateScoresFromAnswers, calculateMatchScore,
-  getRecommendations, generateCocktail,
-  getProfile, getQuestions, getAllMBTITypes,
-  getCocktailsByMethod, getAllMethods
+  calculateMatchScore, getRecommendations, generateCocktail,
+  getProfile, getAllMBTITypes, getAllMethods
 };

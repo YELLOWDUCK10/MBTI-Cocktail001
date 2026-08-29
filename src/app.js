@@ -3,6 +3,8 @@
  * 升级：维度滑块输入 + AI 生成鸡尾酒
  */
 import engine from './engine.js';
+import COCKTAILS from './cocktails.js';
+import { METHODS } from './flavor-library.js';
 
 // ==================== 全局状态 ====================
 const State = {
@@ -15,32 +17,39 @@ const State = {
   wikiCategory: 'all',
   wikiMethod: 'all',
   wikiSearch: '',
-  generatedHistory: [] // AI 生成酒名称历史（去重）
+  generatedHistory: [], // AI 生成酒名称历史（去重）
+  recList: [],          // 当前类型的全量已排序推荐（带 _score）
+  recShownIds: [],      // 本轮已展示过的推荐酒款 id
+  recCurrent: []        // 当前展示的一组推荐
 };
 
 // ==================== 收藏管理 ====================
+// 格式：[{type:'ref', id}（经典酒引用）| {type:'ai', cocktail}（AI 酒完整对象）]
 const FAV_KEY = 'mbti-cocktail-favorites';
 const GEN_HISTORY_KEY = 'mbti-cocktail-gen-history';
+const LAST_STATE_KEY = 'mbti-cocktail-last-state';
+
+function favId(f) { return f.type === 'ai' ? f.cocktail.id : f.id; }
+
+function normalizeFav(f) {
+  if (typeof f === 'string') return { type: 'ref', id: f };                 // 旧格式：纯 id
+  if (f && f.type === 'ref' && f.id) return f;
+  if (f && f.type === 'ai' && f.cocktail && f.cocktail.id) return f;
+  return null;
+}
 
 async function loadFavs() {
   try {
-    if (window.electronAPI?.isElectron) {
-      const d = await window.electronAPI.loadFavorites();
-      State.favorites = d || [];
-    } else {
-      State.favorites = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-    }
+    const raw = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    State.favorites = raw.map(normalizeFav).filter(Boolean);
+    // 检测到旧格式（纯 id）则迁移后立即写回
+    if (raw.some(f => typeof f === 'string')) saveFavs();
   } catch { State.favorites = []; }
 }
 
 function saveFavs() {
-  try {
-    if (window.electronAPI?.isElectron) {
-      window.electronAPI.saveFavorites(State.favorites).catch(() => {});
-    } else {
-      localStorage.setItem(FAV_KEY, JSON.stringify(State.favorites));
-    }
-  } catch { /* ignore */ }
+  try { localStorage.setItem(FAV_KEY, JSON.stringify(State.favorites)); }
+  catch { /* ignore */ }
 }
 
 function loadGenHistory() {
@@ -53,12 +62,13 @@ function saveGenHistory() {
   catch { /* ignore */ }
 }
 
-function isFav(id) { return State.favorites.includes(id); }
+function isFav(id) { return State.favorites.some(f => favId(f) === id); }
 
-function toggleFav(id) {
-  const i = State.favorites.indexOf(id);
+function toggleFav(id, cocktail) {
+  const i = State.favorites.findIndex(f => favId(f) === id);
   if (i > -1) State.favorites.splice(i, 1);
-  else State.favorites.push(id);
+  else if (cocktail && cocktail._isGenerated) State.favorites.push({ type: 'ai', cocktail });
+  else State.favorites.push({ type: 'ref', id });
   saveFavs();
 }
 
@@ -110,10 +120,10 @@ const sliderPairs = [
 window.onSliderChange = function() {
   for (const pair of sliderPairs) {
     const val = parseInt(document.getElementById('slider-' + pair.id).value);
-    State.intensities[pair.left] = 100 - val;
-    State.intensities[pair.right] = val;
-    document.getElementById('val-' + pair.left).textContent = (100 - val) + '%';
-    document.getElementById('val-' + pair.right).textContent = val + '%';
+    State.intensities[pair.left] = val;
+    State.intensities[pair.right] = 100 - val;
+    document.getElementById('val-' + pair.left).textContent = val + '%';
+    document.getElementById('val-' + pair.right).textContent = (100 - val) + '%';
     document.getElementById('slider-fill-' + pair.id).style.width = val + '%';
   }
 
@@ -129,6 +139,7 @@ window.onSliderChange = function() {
 
 window.startRecommend = function() {
   onSliderChange();
+  saveLastState();
   navigate('result');
 };
 
@@ -151,25 +162,52 @@ window.selectType = function(type) {
   for (const pair of sliderPairs) {
     const left = lefts[pair.id];
     const right = pair.right;
-    const val = dims.includes(right) ? 75 : 25; // 偏向75%
+    const val = dims.includes(right) ? 25 : 75; // 左侧值：选右侧字母→25，选左侧字母→75
     document.getElementById('slider-' + pair.id).value = val;
-    State.intensities[left] = 100 - val;
-    State.intensities[right] = val;
-    document.getElementById('val-' + left).textContent = (100 - val) + '%';
-    document.getElementById('val-' + right).textContent = val + '%';
+    State.intensities[left] = val;
+    State.intensities[right] = 100 - val;
+    document.getElementById('val-' + left).textContent = val + '%';
+    document.getElementById('val-' + right).textContent = (100 - val) + '%';
     document.getElementById('slider-fill-' + pair.id).style.width = val + '%';
   }
   State.mbtiType = type;
   document.getElementById('mbti-preview').textContent = type;
   document.getElementById('type-picker').classList.add('hidden');
+  saveLastState();
   navigate('result');
 };
+
+// ==================== last-state（滑块位置 + 类型，重开自动恢复） ====================
+function saveLastState() {
+  try { localStorage.setItem(LAST_STATE_KEY, JSON.stringify({ intensities: State.intensities, mbtiType: State.mbtiType })); }
+  catch { /* ignore */ }
+}
+
+function restoreLastState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(LAST_STATE_KEY) || 'null');
+    if (!s || !s.intensities || !s.mbtiType) return;
+    State.intensities = s.intensities;
+    State.mbtiType = s.mbtiType;
+    const leftVal = { EI: s.intensities.E, SN: s.intensities.S, TF: s.intensities.T, JP: s.intensities.J };
+    for (const pair of sliderPairs) {
+      const val = leftVal[pair.id];
+      document.getElementById('slider-' + pair.id).value = val;
+      document.getElementById('val-' + pair.left).textContent = val + '%';
+      document.getElementById('val-' + pair.right).textContent = (100 - val) + '%';
+      document.getElementById('slider-fill-' + pair.id).style.width = val + '%';
+    }
+    document.getElementById('mbti-preview').textContent = s.mbtiType;
+  } catch { /* ignore */ }
+}
 
 // ==================== 结果页 ====================
 function renderResult() {
   const type = State.mbtiType;
   const profile = engine.getProfile(type);
-  const recs = engine.getRecommendations(type, { intensities: State.intensities });
+  State.recList = engine.getRecommendations(type, { intensities: State.intensities });
+  State.recShownIds = State.recList.slice(0, 5).map(c => c.id);
+  State.recCurrent = State.recList.slice(0, 5);
 
   document.getElementById('result-hero').innerHTML = `
     <div class="result-type">${type}</div>
@@ -194,18 +232,43 @@ function renderResult() {
       </div>`;
   }).join('');
 
-  document.getElementById('result-list').innerHTML = recs.map(c => cocktailCard(c)).join('');
+  renderResultList();
 
   // AI 生成
   generateAndShowAI();
 }
+
+function renderResultList() {
+  const container = document.getElementById('result-list');
+  if (!State.recCurrent.length) {
+    container.innerHTML = '<div class="empty-state"><p>没有匹配的鸡尾酒，试试调整维度</p></div>';
+    return;
+  }
+  container.innerHTML = State.recCurrent.map(c => cocktailCard(c, { match: c._score, exact: c._exact })).join('');
+}
+
+window.shuffleRecs = function() {
+  const list = State.recList;
+  if (!list.length) return;
+  // 排除已展示酒款，取下一组 Top-5；池耗尽则从头循环
+  let remaining = list.filter(c => !State.recShownIds.includes(c.id));
+  if (remaining.length === 0) {
+    State.recShownIds = [];
+    remaining = list;
+  }
+  const next = remaining.slice(0, 5);
+  State.recShownIds.push(...next.map(c => c.id));
+  State.recCurrent = next;
+  renderResultList();
+  showToast('已换一批 🍹');
+};
 
 function generateAndShowAI() {
   const cocktail = engine.generateCocktail(State.mbtiType, State.intensities, State.generatedHistory);
   State.generatedHistory.push(cocktail.name);
   State.aiCocktail = cocktail;  // 保存到全局状态
   saveGenHistory();
-  document.getElementById('ai-result').innerHTML = cocktailCard(cocktail, true);
+  document.getElementById('ai-result').innerHTML = cocktailCard(cocktail, { ai: true });
 }
 
 window.regenerateAI = function() {
@@ -218,27 +281,30 @@ function renderDetail() {
   const id = State._routeData?.id || State.detailId;
   State.detailId = id;
 
-  // 如果是 AI 生成的酒，直接渲染
+  // 路由数据里带 AI 酒（当前会话或收藏）直接渲染
   if (State._routeData?.aiCocktail) {
     renderCocktailDetail(State._routeData.aiCocktail);
     return;
   }
-  // 检查全局 aiCocktail
+  // 当前会话的 AI 酒
   if (State.aiCocktail && State.aiCocktail.id === id) {
     renderCocktailDetail(State.aiCocktail);
     return;
   }
+  // 收藏里的 AI 酒（跨会话恢复）
+  const favAI = State.favorites.find(f => f.type === 'ai' && f.cocktail.id === id);
+  if (favAI) {
+    renderCocktailDetail(favAI.cocktail);
+    return;
+  }
 
-  import('./cocktails.js').then(mod => {
-    const cocktails = mod.default;
-    const cocktail = cocktails.find(x => x.id === id);
-    if (!cocktail) return;
-    renderCocktailDetail(cocktail);
-  });
+  const cocktail = COCKTAILS.find(x => x.id === id);
+  if (cocktail) renderCocktailDetail(cocktail);
 }
 
 function renderCocktailDetail(cocktail) {
   const id = cocktail.id;
+  State._detailCocktail = cocktail;
   document.getElementById('detail-fav-btn').classList.toggle('active', isFav(id));
   document.getElementById('detail-fav-btn').textContent = isFav(id) ? '♥' : '♡';
   const isAI = cocktail._isGenerated;
@@ -273,14 +339,36 @@ function renderCocktailDetail(cocktail) {
 }
 
 window.toggleDetailFav = function() {
+  const cocktail = State._detailCocktail;
   const id = State.detailId;
   if (!id) return;
-  toggleFav(id);
+  toggleFav(id, cocktail);
   const btn = document.getElementById('detail-fav-btn');
   btn.classList.toggle('active', isFav(id));
   btn.textContent = isFav(id) ? '♥' : '♡';
   showToast(isFav(id) ? '已收藏' : '已取消收藏');
 };
+
+// 卡片心形一键收藏（PRD 4.6）
+window.toggleCardFav = function(id) {
+  let cocktail = null;
+  if (State.aiCocktail && State.aiCocktail.id === id) cocktail = State.aiCocktail;
+  else {
+    const f = State.favorites.find(x => x.type === 'ai' && x.cocktail.id === id);
+    if (f) cocktail = f.cocktail;
+    else cocktail = COCKTAILS.find(c => c.id === id) || null;
+  }
+  toggleFav(id, cocktail);
+  showToast(isFav(id) ? '已收藏' : '已取消收藏');
+  refreshCurrentList();
+};
+
+// 收藏状态变更后局部刷新当前列表
+function refreshCurrentList() {
+  if (State.route === 'result') renderResultList();
+  else if (State.route === 'wiki') renderWikiList();
+  else if (State.route === 'favorites') renderFavorites();
+}
 
 // ==================== 百科 ====================
 function renderWiki() {
@@ -297,23 +385,22 @@ window.setWikiCategory = function(c) { State.wikiCategory = c; renderWiki(); };
 window.setWikiMethod = function(m) { State.wikiMethod = m; renderWiki(); };
 
 function renderWikiList() {
-  import('./cocktails.js').then(mod => {
-    let list = mod.default;
-    if (State.wikiCategory !== 'all') list = list.filter(c => c.category === State.wikiCategory);
-    if (State.wikiMethod !== 'all') list = list.filter(c => c.method === State.wikiMethod);
-    const s = (document.getElementById('wiki-search')?.value || '').toLowerCase();
-    if (s) list = list.filter(c => c.name.includes(s) || c.nameEn.toLowerCase().includes(s) || c.tags?.some(t => t.includes(s)) || c.flavorNotes?.some(f => f.includes(s)));
-    document.getElementById('wiki-list').innerHTML = list.length > 0 ? list.map(c => cocktailCard(c)).join('') : '<div class="empty-state"><p>没有找到匹配的鸡尾酒</p></div>';
-  });
+  let list = COCKTAILS;
+  if (State.wikiCategory !== 'all') list = list.filter(c => c.category === State.wikiCategory);
+  if (State.wikiMethod !== 'all') list = list.filter(c => c.method === State.wikiMethod);
+  const s = (document.getElementById('wiki-search')?.value || '').toLowerCase();
+  if (s) list = list.filter(c => c.name.includes(s) || c.nameEn.toLowerCase().includes(s) || c.tags?.some(t => t.includes(s)) || c.flavorNotes?.some(f => f.includes(s)));
+  // 默认编辑评分降序（PRD 4.4）
+  list = [...list].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  document.getElementById('wiki-list').innerHTML = list.length > 0 ? list.map(c => cocktailCard(c)).join('') : '<div class="empty-state"><p>没有找到匹配的鸡尾酒</p></div>';
 }
 
 // ==================== 收藏页 ====================
 function renderFavorites() {
-  import('./cocktails.js').then(mod => {
-    const favs = mod.default.filter(c => State.favorites.includes(c.id));
-    document.getElementById('favorites-list').innerHTML = favs.map(c => cocktailCard(c)).join('');
-    document.getElementById('favorites-empty').classList.toggle('hidden', favs.length > 0);
-  });
+  // 按收藏时间倒序：最新收藏排最前（PRD 4.6）
+  const entries = State.favorites.map(f => f.type === 'ai' ? f.cocktail : COCKTAILS.find(c => c.id === f.id)).filter(Boolean).reverse();
+  document.getElementById('favorites-list').innerHTML = entries.map(c => cocktailCard(c, c._isGenerated ? { ai: true } : {})).join('');
+  document.getElementById('favorites-empty').classList.toggle('hidden', entries.length > 0);
 }
 
 // ==================== 个人页 ====================
@@ -328,15 +415,23 @@ function renderProfile() {
 }
 
 // ==================== 鸡尾酒卡片 ====================
-function cocktailCard(c, isAI = false) {
+function cocktailCard(c, opts = {}) {
+  const isAI = !!opts.ai;
+  const match = opts.match;
   return `
     <div class="cocktail-card ${isAI ? 'ai-card' : ''}" onclick="openDetail('${c.id}')">
       ${isAI ? '<div class="ai-badge">✨ AI 特调</div>' : ''}
       <div class="card-header">
         <div><span class="card-name">${c.name}</span><span class="card-name-en">${c.nameEn}</span></div>
-        <span style="color:${isFav(c.id)?'var(--accent)':'var(--text-muted)'};font-size:18px">${isFav(c.id)?'♥':'♡'}</span>
+        <span class="card-fav ${isFav(c.id) ? 'active' : ''}" onclick="event.stopPropagation(); toggleCardFav('${c.id}')">${isFav(c.id) ? '♥' : '♡'}</span>
       </div>
       <div class="card-desc">${c.description}</div>
+      ${match != null ? `
+      <div class="match-row">
+        <span class="match-label">${opts.exact ? '🎯 匹配度' : '匹配度'}</span>
+        <div class="match-bar"><div class="match-fill" style="width:${match}%"></div></div>
+        <span class="match-pct">${match}%</span>
+      </div>` : ''}
       <div class="card-meta">
         <div class="meta-item"><span class="meta-label">烈度</span><div class="meta-bar"><div class="meta-bar-fill strength" style="width:${c.strength*20}%"></div></div></div>
         <div class="meta-item"><span class="meta-label">甜度</span><div class="meta-bar"><div class="meta-bar-fill sweetness" style="width:${c.sweetness*20}%"></div></div></div>
@@ -348,20 +443,29 @@ function cocktailCard(c, isAI = false) {
 }
 
 window.openDetail = function(id) {
-  State.detailId = id;
-  // 检查是否是 AI 生成的酒
-  if (State.aiCocktail && State.aiCocktail.id === id) {
-    navigate('detail', { id, aiCocktail: State.aiCocktail });
-  } else {
-    navigate('detail', { id });
+  // AI 酒：当前会话的，或收藏里的（跨会话）
+  let aiCocktail = null;
+  if (State.aiCocktail && State.aiCocktail.id === id) aiCocktail = State.aiCocktail;
+  else {
+    const fav = State.favorites.find(f => f.type === 'ai' && f.cocktail.id === id);
+    if (fav) aiCocktail = fav.cocktail;
   }
+  navigate('detail', aiCocktail ? { id, aiCocktail } : { id });
 };
 
 // ==================== 工具函数 ====================
-function getMethodEmoji(m) { return ({shake:'🫗',stir:'🥄',build:'🥃',blend:'🌀','muddle-build':'🔨'})[m]||'🍸'; }
+function getMethodEmoji(m) { return (METHODS[m] && METHODS[m].emoji) || '🍸'; }
+
 function getMethodDesc(m) {
-  return ({shake:'所有材料加冰放入摇酒壶，摇和至充分冷却后过滤倒入杯中',stir:'所有材料加冰放入调酒杯，用吧勺搅拌至充分冷却后过滤倒入杯中',build:'直接在饮用杯中按顺序加入材料，加冰完成',blend:'所有材料加冰放入搅拌机打碎混合，倒入杯中','muddle-build':'先捣压草本/水果释放风味，再按直调法加入其余材料'})[m]||'按配方顺序调制';
+  return (METHODS[m] && METHODS[m].desc) || '按配方顺序调制';
 }
+
+// 随机来一杯：从库内酒款随机跳转详情页
+window.randomCocktail = function() {
+  if (COCKTAILS.length === 0) return;
+  const c = COCKTAILS[Math.floor(Math.random() * COCKTAILS.length)];
+  window.openDetail(c.id);
+};
 
 function showToast(msg) {
   const t = document.querySelector('.toast'); if (t) t.remove();
@@ -373,9 +477,13 @@ function showToast(msg) {
 document.addEventListener('DOMContentLoaded', async () => {
   await loadFavs();
   loadGenHistory();
-  // 初始化滑块填充
-  for (const pair of sliderPairs) {
-    document.getElementById('slider-fill-' + pair.id).style.width = '50%';
+  // 恢复上次滑块位置与类型（打开仍落在首页，仅恢复输入态）
+  restoreLastState();
+  if (State.intensities.E === 50) {
+    // 无历史状态时初始化滑块填充为 50%
+    for (const pair of sliderPairs) {
+      document.getElementById('slider-fill-' + pair.id).style.width = '50%';
+    }
   }
   render();
   document.getElementById('wiki-search')?.addEventListener('input', () => {

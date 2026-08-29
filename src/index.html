@@ -107,7 +107,10 @@
       <div class="intensity-bars" id="intensity-bars"></div>
 
       <div class="result-section">
-        <h3 class="section-title">🍹 为你推荐的鸡尾酒</h3>
+        <div class="result-section-header">
+          <h3 class="section-title">🍹 为你推荐的鸡尾酒</h3>
+          <button class="btn-shuffle" id="btn-shuffle" onclick="shuffleRecs()">🎲 换一批</button>
+        </div>
         <div class="cocktail-list" id="result-list"></div>
       </div>
 
@@ -117,12 +120,12 @@
         <p class="ai-hint">基于你的维度倾向，AI 为你独创一款专属配方</p>
         <div id="ai-result"></div>
         <button class="btn btn-outline btn-large" onclick="regenerateAI()" id="btn-regenerate" style="margin-top:12px">
-          🔄 换一款
+          🔄 重新生成AI特调
         </button>
       </div>
 
       <div class="result-actions">
-        <button class="btn btn-outline" onclick="navigate('home')">🔄 重新调整</button>
+        <button class="btn btn-outline" onclick="navigate('home')">🔄 重新调整MBTI</button>
         <button class="btn btn-outline" onclick="navigate('wiki')">📚 浏览百科</button>
       </div>
     </div>
@@ -140,6 +143,7 @@
     <div id="page-wiki" class="page">
       <div class="wiki-header">
         <h2 class="page-title">📚 鸡尾酒百科</h2>
+        <button class="btn-shuffle" onclick="randomCocktail()">🎲 随机来一杯</button>
       </div>
       <div class="wiki-filters">
         <input type="text" class="search-input" placeholder="🔍 搜索鸡尾酒..." id="wiki-search" oninput="renderWiki()">

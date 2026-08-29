@@ -17,8 +17,8 @@
   --text-muted: #6A6A7A;
   --accent: #E94560;
   --accent-light: #FF6B81;
-  --ai-glow: rgba(168, 130, 255, 0.4);
-  --ai-bg: rgba(168, 130, 255, 0.08);
+  --ai-glow: rgba(94, 234, 212, 0.4);
+  --ai-bg: rgba(94, 234, 212, 0.08);
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
   --radius: 16px;
   --radius-sm: 10px;
@@ -367,6 +367,76 @@ body {
   padding-left: 4px;
 }
 
+.result-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result-section-header .section-title { margin-bottom: 12px; }
+
+.btn-shuffle {
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--gold-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-shuffle:hover {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+}
+.btn-shuffle:active { transform: scale(0.95); }
+
+/* 匹配度展示（推荐卡片内） */
+/* 卡片心形收藏按钮（PRD 4.6） */
+.card-fav {
+  color: var(--text-muted);
+  font-size: 18px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s, transform 0.2s;
+}
+.card-fav:hover { transform: scale(1.25); }
+.card-fav:active { transform: scale(0.9); }
+.card-fav.active { color: var(--accent); }
+
+.match-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.match-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.match-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.match-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transition: width 0.4s ease;
+}
+.match-pct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
 /* ==================== Cocktail List & Card ==================== */
 .cocktail-list {
   display: flex;
@@ -628,6 +698,9 @@ body {
 
 /* ==================== Wiki Page ==================== */
 .wiki-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px 0 16px;
 }
 
@@ -853,7 +926,7 @@ body {
 .slider-track {
   position: relative;
   height: 8px;
-  background: rgba(255,255,255,0.08);
+  background: #000;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -873,7 +946,7 @@ body {
 .slider-fill {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--gold-light));
   border-radius: 4px;
@@ -962,6 +1035,9 @@ body {
 /* ==================== v2.0 新增：AI 特调区域 ==================== */
 .ai-section {
   position: relative;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.28) 0%, rgba(94, 234, 212, 0.16) 100%);
+  border-radius: var(--radius);
+  padding: 18px 16px 20px;
 }
 
 .ai-section::before {
@@ -969,7 +1045,7 @@ body {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   border-radius: var(--radius);
-  border: 1px solid rgba(168, 130, 255, 0.2);
+  border: 1px solid rgba(94, 234, 212, 0.25);
   pointer-events: none;
 }
 
@@ -982,8 +1058,8 @@ body {
 
 .ai-card {
   position: relative;
-  border: 1px solid rgba(168, 130, 255, 0.25) !important;
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(168,130,255,0.05) 100%) !important;
+  border: 1px solid rgba(94, 234, 212, 0.28) !important;
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(94, 234, 212, 0.08) 100%) !important;
 }
 
 .ai-badge {
@@ -991,8 +1067,8 @@ body {
   top: 12px;
   right: 14px;
   font-size: 11px;
-  color: #A882FF;
-  background: rgba(168, 130, 255, 0.12);
+  color: #5EEAD4;
+  background: rgba(94, 234, 212, 0.14);
   padding: 3px 10px;
   border-radius: 10px;
   font-weight: 500;
@@ -1002,8 +1078,8 @@ body {
 .ai-badge-inline {
   display: inline-block;
   font-size: 12px;
-  color: #A882FF;
-  background: rgba(168, 130, 255, 0.12);
+  color: #5EEAD4;
+  background: rgba(94, 234, 212, 0.14);
   padding: 3px 12px;
   border-radius: 10px;
   margin-top: 8px;

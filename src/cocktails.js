@@ -420,8 +420,8 @@ export default [
     mbtiMatch: ['ESFP', 'ENFP', 'ESTP'],
     description: '清新活力的热带经典，自由奔放，如同探索者的灵魂。',
     story: '起源于古巴哈瓦那，海明威在 La Bodeguita del Medio 酒吧的墙上留下了"我的莫吉托在 La Bodeguita"的名言，让这款酒名扬天下。',
-    method: 'muddle-build',
-    methodLabel: '捣拌直调法',
+    method: 'muddle',
+    methodLabel: '捣压法',
     ingredients: [
       { name: '白朗姆酒', amount: '45', unit: 'ml', category: 'base' },
       { name: '新鲜青柠汁', amount: '20', unit: 'ml', category: 'acid' },
