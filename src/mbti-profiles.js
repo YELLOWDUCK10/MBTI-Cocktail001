@@ -13,6 +13,7 @@
 
 export const MBTI_PROFILES = {
   INTJ: {
+    myth: '哈迪斯',
     name: '建筑师',
     title: '战略家',
     description: '富有想象力和战略性的思考者，对一切都有计划。',
@@ -22,6 +23,7 @@ export const MBTI_PROFILES = {
     suitable: '商务洽谈、深夜独酌'
   },
   INTP: {
+    myth: '普罗米修斯',
     name: '逻辑学家',
     title: '发明家',
     description: '具有创新精神的思考者，对知识有着永不满足的渴望。',
@@ -31,6 +33,7 @@ export const MBTI_PROFILES = {
     suitable: '实验室风格酒吧、创意调酒体验'
   },
   ENTJ: {
+    myth: '宙斯',
     name: '指挥官',
     title: '领导者',
     description: '大胆、富有想象力的领导者，总能找到解决问题的方法。',
@@ -40,6 +43,7 @@ export const MBTI_PROFILES = {
     suitable: '高端商务酒吧、庆功宴'
   },
   ENTP: {
+    myth: '赫尔墨斯',
     name: '辩论家',
     title: '发明家',
     description: '聪明好奇的思考者，不会被智力挑战吓倒。',
@@ -49,6 +53,7 @@ export const MBTI_PROFILES = {
     suitable: '潮流酒吧、社交聚会'
   },
   INFJ: {
+    myth: '阿波罗',
     name: '提倡者',
     title: '守护者',
     description: '安静而神秘，但激励人心且不知疲倦的理想主义者。',
@@ -58,6 +63,7 @@ export const MBTI_PROFILES = {
     suitable: '安静的小酒馆、私密聚会'
   },
   INFP: {
+    myth: '珀耳塞福涅',
     name: '调停者',
     title: '理想主义者',
     description: '诗意、善良的利他主义者，总是热衷于帮助美好的事业。',
@@ -67,6 +73,7 @@ export const MBTI_PROFILES = {
     suitable: '文艺咖啡馆、日落露台'
   },
   ENFJ: {
+    myth: '得墨忒耳',
     name: '主人公',
     title: '导师',
     description: '富有魅力且鼓舞人心的领导者，能让人为之着迷。',
@@ -76,6 +83,7 @@ export const MBTI_PROFILES = {
     suitable: '主题派对、社交晚宴'
   },
   ENFP: {
+    myth: '狄俄尼索斯',
     name: '竞选者',
     title: '探索者',
     description: '热情、富有创造力的自由灵魂，总能找到微笑的理由。',
@@ -85,6 +93,7 @@ export const MBTI_PROFILES = {
     suitable: '泳池派对、音乐节、旅行酒吧'
   },
   ISTJ: {
+    myth: '忒弥斯',
     name: '物流师',
     title: '守护者',
     description: '务实且注重事实的个人，其可靠性不容置疑。',
@@ -94,6 +103,7 @@ export const MBTI_PROFILES = {
     suitable: '传统英式酒吧、威士忌品鉴会'
   },
   ISFJ: {
+    myth: '赫拉',
     name: '守卫者',
     title: '守护者',
     description: '非常专注和温暖的守护者，随时准备保护所爱之人。',
@@ -103,6 +113,7 @@ export const MBTI_PROFILES = {
     suitable: '温馨的家庭聚会、闺蜜之夜'
   },
   ESTJ: {
+    myth: '雅典娜',
     name: '总经理',
     title: '执行者',
     description: '优秀的管理者，在管理事务或人员方面无与伦比。',
@@ -112,6 +123,7 @@ export const MBTI_PROFILES = {
     suitable: '商务晚宴、威士忌酒吧'
   },
   ESFJ: {
+    myth: '赫斯提亚',
     name: '执政官',
     title: '照顾者',
     description: '非常关心他人，受欢迎且善于社交，总是乐于助人。',
@@ -121,6 +133,7 @@ export const MBTI_PROFILES = {
     suitable: '生日派对、欢乐时光'
   },
   ISTP: {
+    myth: '赫菲斯托斯',
     name: '鉴赏家',
     title: '实干家',
     description: '大胆而实际的实验者，精通各种工具。',
@@ -130,6 +143,7 @@ export const MBTI_PROFILES = {
     suitable: '手工调酒吧、户外烧烤'
   },
   ISFP: {
+    myth: '阿尔忒弥斯',
     name: '探险家',
     title: '艺术家',
     description: '灵活而富有魅力的艺术家，随时准备探索和体验新事物。',
@@ -139,6 +153,7 @@ export const MBTI_PROFILES = {
     suitable: '艺术展酒会、网红打卡酒吧'
   },
   ESTP: {
+    myth: '阿瑞斯',
     name: '企业家',
     title: '冒险家',
     description: '聪明、精力充沛、非常敏锐，真正享受冒险的乐趣。',
@@ -148,6 +163,7 @@ export const MBTI_PROFILES = {
     suitable: '运动酒吧、电音派对'
   },
   ESFP: {
+    myth: '阿芙洛狄忒',
     name: '表演者',
     title: '表演家',
     description: '自发的、精力充沛的表演者，生活永远不会在他们身边无聊。',

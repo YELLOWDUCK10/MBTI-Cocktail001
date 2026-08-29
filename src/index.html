@@ -89,6 +89,9 @@
         <button class="btn btn-outline btn-large" onclick="toggleTypePicker()">
           <span class="btn-icon">🎯</span> 快速选择类型
         </button>
+        <button class="btn btn-outline btn-large" onclick="navigate('cheers')">
+          <span class="btn-icon">🥂</span> 碰杯模式
+        </button>
       </div>
       <div id="type-picker" class="type-picker hidden">
         <p class="picker-label">选择 MBTI 类型（倾向默认 50%）</p>
@@ -127,6 +130,28 @@
       <div class="result-actions">
         <button class="btn btn-outline" onclick="navigate('home')">🔄 重新调整MBTI</button>
         <button class="btn btn-outline" onclick="navigate('wiki')">📚 浏览百科</button>
+      </div>
+    </div>
+
+    <!-- ==================== 碰杯模式（v1.1 双人合体特调） ==================== -->
+    <div id="page-cheers" class="page">
+      <div class="result-header">
+        <button class="btn-back" onclick="navigate('home')">← 返回</button>
+      </div>
+      <div class="cheers-hero">
+        <h2 class="page-title">🥂 碰杯模式</h2>
+        <p class="cheers-hint">两位各自调节维度（或直选类型），混合出属于你们俩的合体特调</p>
+      </div>
+      <div class="cheers-layout" id="cheers-columns"></div>
+      <div class="cheers-generate">
+        <button class="btn btn-primary btn-large" onclick="generateDuo()">🥂 生成合体特调</button>
+      </div>
+      <div class="result-section" id="cheers-result-section" hidden>
+        <h3 class="section-title">🥂 你们的合体特调</h3>
+        <div id="cheers-result"></div>
+        <button class="btn btn-outline btn-large" onclick="regenerateDuo()" style="margin-top:12px">
+          🔄 重新生成合体特调
+        </button>
       </div>
     </div>
 
@@ -171,9 +196,12 @@
       <div class="profile-header-section">
         <div class="profile-avatar">🍸</div>
         <h2 class="page-title">MBTI Cocktail</h2>
-        <p class="profile-version">v2.0.0</p>
+        <p class="profile-version">v3.0.0</p>
       </div>
       <div class="profile-section" id="profile-mbti"></div>
+      <div class="profile-section" id="profile-stats"></div>
+      <div class="profile-section" id="profile-cocktailbook"></div>
+      <div class="profile-section" id="profile-settings"></div>
       <div class="profile-menu">
         <div class="menu-item" onclick="navigate('home')">
           <span class="menu-icon">🎚️</span>

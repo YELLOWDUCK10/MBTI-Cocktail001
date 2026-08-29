@@ -806,6 +806,237 @@ body {
   margin-bottom: 16px;
 }
 
+/* ==================== v1.1 设置区块：神话命名开关 ==================== */
+.section-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.setting-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.setting-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.toggle {
+  width: 48px;
+  height: 26px;
+  border-radius: 13px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--gold-border);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.toggle.on { background: var(--gold-dim); }
+
+.toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: left 0.2s ease, background 0.2s ease;
+}
+
+.toggle.on .toggle-knob { left: 24px; background: var(--gold); }
+
+/* ==================== v1.1 复制配方 ==================== */
+.detail-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.copy-recipe-btn {
+  background: none;
+  border: 1px solid var(--gold-border);
+  border-radius: 14px;
+  color: var(--gold);
+  font-size: 12px;
+  font-family: var(--font-body);
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.copy-recipe-btn:hover { background: var(--gold-dim); border-color: var(--gold); }
+.copy-recipe-btn:active { transform: scale(0.96); }
+
+/* ==================== v1.1 个人页改造（统计 + 人格酒单） ==================== */
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stats-item {
+  flex: 1;
+  text-align: center;
+  padding: 10px 4px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+}
+
+.stats-num {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: var(--font-display);
+}
+
+.stats-sub {
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+.stats-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.stats-empty {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.cocktailbook-empty {
+  text-align: center;
+  padding: 18px 0 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+.cocktailbook-empty .btn { margin-top: 12px; padding: 10px 20px; font-size: 13px; }
+
+.section-label-sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 6px;
+  letter-spacing: 0;
+}
+
+/* ==================== v1.1 味觉档案 ==================== */
+.taste-rate {
+  display: flex;
+  gap: 12px;
+}
+
+.taste-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--gold-border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+}
+.taste-btn:active { transform: scale(0.97); }
+.taste-btn.up.active {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+.taste-btn.down.active {
+  background: rgba(233, 69, 96, 0.12);
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+.taste-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ==================== v1.1 碰杯模式 ==================== */
+.cheers-hero {
+  text-align: center;
+  margin: 8px 0 20px;
+}
+
+.cheers-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.cheers-layout {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.cheer-column {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.cheer-col-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.cheer-type-preview {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+}
+
+.cheer-picker-btn {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.cheers-vs {
+  font-size: 28px;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  padding-top: 60px;
+}
+
+.cheers-generate {
+  text-align: center;
+  margin: 20px 0;
+}
+
 .profile-menu {
   background: var(--bg-card);
   border-radius: var(--radius);
@@ -1178,6 +1409,9 @@ body {
         <button class="btn btn-outline btn-large" onclick="toggleTypePicker()">
           <span class="btn-icon">🎯</span> 快速选择类型
         </button>
+        <button class="btn btn-outline btn-large" onclick="navigate('cheers')">
+          <span class="btn-icon">🥂</span> 碰杯模式
+        </button>
       </div>
       <div id="type-picker" class="type-picker hidden">
         <p class="picker-label">选择 MBTI 类型（倾向默认 50%）</p>
@@ -1216,6 +1450,28 @@ body {
       <div class="result-actions">
         <button class="btn btn-outline" onclick="navigate('home')">🔄 重新调整MBTI</button>
         <button class="btn btn-outline" onclick="navigate('wiki')">📚 浏览百科</button>
+      </div>
+    </div>
+
+    <!-- ==================== 碰杯模式（v1.1 双人合体特调） ==================== -->
+    <div id="page-cheers" class="page">
+      <div class="result-header">
+        <button class="btn-back" onclick="navigate('home')">← 返回</button>
+      </div>
+      <div class="cheers-hero">
+        <h2 class="page-title">🥂 碰杯模式</h2>
+        <p class="cheers-hint">两位各自调节维度（或直选类型），混合出属于你们俩的合体特调</p>
+      </div>
+      <div class="cheers-layout" id="cheers-columns"></div>
+      <div class="cheers-generate">
+        <button class="btn btn-primary btn-large" onclick="generateDuo()">🥂 生成合体特调</button>
+      </div>
+      <div class="result-section" id="cheers-result-section" hidden>
+        <h3 class="section-title">🥂 你们的合体特调</h3>
+        <div id="cheers-result"></div>
+        <button class="btn btn-outline btn-large" onclick="regenerateDuo()" style="margin-top:12px">
+          🔄 重新生成合体特调
+        </button>
       </div>
     </div>
 
@@ -1260,9 +1516,12 @@ body {
       <div class="profile-header-section">
         <div class="profile-avatar">🍸</div>
         <h2 class="page-title">MBTI Cocktail</h2>
-        <p class="profile-version">v2.0.0</p>
+        <p class="profile-version">v3.0.0</p>
       </div>
       <div class="profile-section" id="profile-mbti"></div>
+      <div class="profile-section" id="profile-stats"></div>
+      <div class="profile-section" id="profile-cocktailbook"></div>
+      <div class="profile-section" id="profile-settings"></div>
       <div class="profile-menu">
         <div class="menu-item" onclick="navigate('home')">
           <span class="menu-icon">🎚️</span>
@@ -1407,6 +1666,9 @@ const FLAVOR_KEYWORDS = {
   complex: ['交响', '层叠', '迷踪', '幻境', '变奏'],
   bold: ['狂想', '风暴', '烈焰', '雷霆', '锋芒']
 };
+
+// ==================== 神话命名后缀词库（v1.1 神话命名词库） ====================
+const MYTH_SUFFIXES = ['之谋', '之焰', '之宴', '之誓', '之歌', '之梦', '之痕', '之舞'];
 
 // ==================== 风味兼容性规则 ====================
 // 标记明显冲突的组合（生成时避开）
@@ -1560,7 +1822,7 @@ const COCKTAILS = [
     structure: 'martini',
     baseSpirit: 'gin',
     strength: 5,
-    sweetness: 0,
+    sweetness: 1,
     abv: 32,
     color: '透明',
     difficulty: 2,
@@ -1673,6 +1935,223 @@ const COCKTAILS = [
     tags: ['经典', '优雅', '蛋清', '粉红']
   },
 
+  {
+    id: 'aviation',
+    name: '航空',
+    nameEn: 'Aviation',
+    category: 'classic',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'sour',
+    baseSpirit: 'gin',
+    strength: 3,
+    sweetness: 2,
+    abv: 24,
+    color: '淡紫',
+    difficulty: 2,
+    rating: 4.5,
+    mbtiMatch: ['INFP', 'ISFP', 'INFJ'],
+    description: '紫罗兰与樱桃利口酒交织的花香经典，如云上飞行的轻盈梦境。',
+    story: '1916 年诞生于纽约 Hotel Wallick，由 Hugo Ensslin 记录于《Recipes for Mixed Drinks》。紫罗兰利口酒一度停产让这杯酒几近失传，直到 2000 年代精酿鸡尾酒复兴才重回酒单，成为花香系酸酒的代表。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '金酒', amount: '45', unit: 'ml', category: 'base' },
+      { name: '黑樱桃利口酒', amount: '15', unit: 'ml', category: 'modifier' },
+      { name: '紫罗兰利口酒', amount: '10', unit: 'ml', category: 'modifier' },
+      { name: '新鲜柠檬汁', amount: '20', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '樱桃',
+    flavorNotes: ['花香', '果味', '柑橘', '樱桃'],
+    scene: ['独饮', '餐前', '社交'],
+    tags: ['经典', '花香', 'IBA', '禁酒令时代']
+  },
+  {
+    id: 'gimlet',
+    name: '吉姆雷特',
+    nameEn: 'Gimlet',
+    category: 'classic',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'sour',
+    baseSpirit: 'gin',
+    strength: 3,
+    sweetness: 2,
+    abv: 26,
+    color: '淡绿',
+    difficulty: 1,
+    rating: 4.2,
+    mbtiMatch: ['INTJ', 'ISTJ', 'ISTP'],
+    description: '金酒与青柠的极简二重奏，干爽利落，毫无多余修饰。',
+    story: '源于英国海军防坏血病的传统——Lauchlin Rose 爵士发明青柠浓缩汁后与船员配给的杜松子酒结合。雷蒙德·钱德勒在《漫长的告别》中写道："真正的吉姆雷特，是金酒与玫瑰的相遇。"',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '金酒', amount: '60', unit: 'ml', category: 'base' },
+      { name: '新鲜青柠汁', amount: '22', unit: 'ml', category: 'acid' },
+      { name: '单糖浆', amount: '15', unit: 'ml', category: 'sweetener' }
+    ],
+    garnish: '青柠轮',
+    flavorNotes: ['青柠', '柑橘', '干型', '清爽'],
+    scene: ['独饮', '餐前'],
+    tags: ['经典', '极简', 'IBA', '酸酒']
+  },
+  {
+    id: 'white-lady',
+    name: '白色佳人',
+    nameEn: 'White Lady',
+    category: 'classic',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'sour',
+    baseSpirit: 'gin',
+    strength: 3,
+    sweetness: 2,
+    abv: 26,
+    color: '透明',
+    difficulty: 2,
+    rating: 4.3,
+    mbtiMatch: ['ENTP', 'ESTP', 'INTP'],
+    description: '金酒、橙酒与柠檬的锋利平衡，优雅外表下的凌厉口感。',
+    story: '诞生于 1920 年代伦敦萨伏依酒店，传说由 Harry MacElhone（后巴黎 Harry\'s New York Bar 创始人）首创。金酒替换掉早期版本的君度做基酒后，三原料的经典配比就此定稿，与 Sidecar、Marguerite 并称酸酒三杰。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '金酒', amount: '40', unit: 'ml', category: 'base' },
+      { name: '君度橙酒', amount: '20', unit: 'ml', category: 'modifier' },
+      { name: '新鲜柠檬汁', amount: '20', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '柠檬皮',
+    flavorNotes: ['柑橘', '橙子', '干型', '清爽'],
+    scene: ['社交', '餐前'],
+    tags: ['经典', 'IBA', '禁酒令时代']
+  },
+  {
+    id: 'singapore-sling',
+    name: '新加坡司令',
+    nameEn: 'Singapore Sling',
+    category: 'tropical',
+    image: '',
+    glass: '飓风杯',
+    structure: 'collins',
+    baseSpirit: 'gin',
+    strength: 2,
+    sweetness: 4,
+    abv: 12,
+    color: '粉红',
+    difficulty: 3,
+    rating: 4.1,
+    mbtiMatch: ['ESFP', 'ENFP', 'ESFJ'],
+    description: '层次繁复的热带长饮，粉红外观下藏着七种原料的精妙协作。',
+    story: '1915 年诞生于新加坡莱佛士酒店 Long Bar，调酒师严崇文为让女士也能体面地饮酒而创——粉红色泽让它伪装成"果汁"。这杯亚洲对鸡尾酒世界最著名的贡献，至今仍是来佛士酒店的活招牌。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '金酒', amount: '30', unit: 'ml', category: 'base' },
+      { name: '黑樱桃利口酒', amount: '15', unit: 'ml', category: 'modifier' },
+      { name: '君度橙酒', amount: '10', unit: 'ml', category: 'modifier' },
+      { name: '菠萝汁', amount: '90', unit: 'ml', category: 'acid' },
+      { name: '新鲜青柠汁', amount: '15', unit: 'ml', category: 'acid' },
+      { name: '红石榴糖浆', amount: '10', unit: 'ml', category: 'sweetener' },
+      { name: '安格斯特拉苦精', amount: '1', unit: '滴', category: 'modifier' }
+    ],
+    garnish: '菠萝角',
+    flavorNotes: ['热带水果', '菠萝', '果味', '甜美'],
+    scene: ['社交', '夏日', '派对'],
+    tags: ['经典', '热带', 'IBA', '长饮']
+  },
+  {
+    id: 'french-75',
+    name: '法式75',
+    nameEn: 'French 75',
+    category: 'classic',
+    image: '',
+    glass: '香槟杯',
+    structure: 'fizz',
+    baseSpirit: 'gin',
+    strength: 3,
+    sweetness: 2,
+    abv: 20,
+    color: '金色',
+    difficulty: 2,
+    rating: 4.4,
+    mbtiMatch: ['ENFJ', 'ENTJ', 'ESFJ'],
+    description: '金酒与香槟的庆典组合，优雅气泡中藏着"75毫米野战炮"的后劲。',
+    story: '一战期间诞生于巴黎 Harry\'s New York Bar，以法国 75mm 野战炮命名——"喝下它如同被炮火击中"。1930 年列入《萨伏依鸡尾酒书》，从此成为庆祝场合的永恒之选。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '金酒', amount: '30', unit: 'ml', category: 'base' },
+      { name: '新鲜柠檬汁', amount: '15', unit: 'ml', category: 'acid' },
+      { name: '单糖浆', amount: '10', unit: 'ml', category: 'sweetener' },
+      { name: '香槟', amount: '60', unit: 'ml', category: 'mixer' }
+    ],
+    garnish: '柠檬皮',
+    flavorNotes: ['气泡', '柑橘', '清爽', '干型'],
+    scene: ['社交', '派对', '餐前'],
+    tags: ['经典', '气泡', 'IBA', '香槟']
+  },
+  {
+    id: 'vesper',
+    name: '维斯珀',
+    nameEn: 'Vesper',
+    category: 'modern',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'martini',
+    baseSpirit: 'gin',
+    strength: 5,
+    sweetness: 1,
+    abv: 35,
+    color: '透明',
+    difficulty: 2,
+    rating: 4.5,
+    mbtiMatch: ['INTJ', 'ISTP', 'ENTJ'],
+    description: '邦德专属的烈性马天尼变体，冰冷、锐利、致命优雅。',
+    story: '1953 年伊恩·弗莱明在《皇家赌场》中为特工 007 设计："摇匀，不要搅拌。"以女主角 Vesper Lynd 命名——一杯酒与一段刻骨铭心的爱情一同成为传奇，配方原稿要求"加一片大而薄的柠檬皮"。',
+    method: 'stir',
+    methodLabel: '搅拌法',
+    ingredients: [
+      { name: '金酒', amount: '60', unit: 'ml', category: 'base' },
+      { name: '伏特加', amount: '15', unit: 'ml', category: 'base' },
+      { name: '干味美思', amount: '10', unit: 'ml', category: 'modifier' }
+    ],
+    garnish: '柠檬皮',
+    flavorNotes: ['干型', '草本', '杜松子', '复杂'],
+    scene: ['独饮', '商务'],
+    tags: ['现代', '烈酒', 'IBA', '007']
+  },
+  {
+    id: 'bramble',
+    name: '荆棘',
+    nameEn: 'Bramble',
+    category: 'modern',
+    image: '',
+    glass: '古典杯',
+    structure: 'sour',
+    baseSpirit: 'gin',
+    strength: 3,
+    sweetness: 3,
+    abv: 22,
+    color: '粉红',
+    difficulty: 2,
+    rating: 4.2,
+    mbtiMatch: ['INFP', 'ISFP', 'ENFP'],
+    description: '碎冰上晕染开的黑莓纹路如荒野荆棘，酸甜交织的英伦夏日。',
+    story: '1984 年由伦敦调酒师 Dick Bradsell 在 Fred\'s Club 首创，灵感来自他童年时在怀特岛采黑莓的记忆。"酸酒基底 + 利口酒淋面"的手法开创了 80 年代英伦新经典流派。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '金酒', amount: '50', unit: 'ml', category: 'base' },
+      { name: '新鲜柠檬汁', amount: '25', unit: 'ml', category: 'acid' },
+      { name: '单糖浆', amount: '10', unit: 'ml', category: 'sweetener' },
+      { name: '黑莓利口酒', amount: '15', unit: 'ml', category: 'modifier' }
+    ],
+    garnish: '柠檬片',
+    flavorNotes: ['莓果', '果味', '柑橘', '甜美'],
+    scene: ['夏日', '社交'],
+    tags: ['现代', '英伦', 'IBA', '莓果']
+  },
   // ==================== 威士忌 Whiskey ====================
   {
     id: 'old-fashioned',
@@ -1859,6 +2338,127 @@ const COCKTAILS = [
     tags: ['经典', '美国最古老', '新奥尔良', 'IBA']
   },
 
+  {
+    id: 'rob-roy',
+    name: '罗伯罗伊',
+    nameEn: 'Rob Roy',
+    category: 'classic',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'manhattan',
+    baseSpirit: 'whiskey',
+    strength: 4,
+    sweetness: 2,
+    abv: 30,
+    color: '琥珀',
+    difficulty: 1,
+    rating: 4.3,
+    mbtiMatch: ['ESTJ', 'ENTJ', 'ISTJ'],
+    description: '曼哈顿的苏格兰版本，烟熏麦芽与甜味美思的沉稳对话。',
+    story: '1894 年诞生于纽约华尔道夫酒店，为推广歌剧《罗伯罗伊》而创。以苏格兰民间英雄 Rob Roy MacGregor 命名，把曼哈顿公式移植到苏格兰麦芽威士忌上，成为最经典的曼哈顿变体。',
+    method: 'stir',
+    methodLabel: '搅拌法',
+    ingredients: [
+      { name: '苏格兰威士忌', amount: '60', unit: 'ml', category: 'base' },
+      { name: '甜味美思', amount: '30', unit: 'ml', category: 'modifier' },
+      { name: '安格斯特拉苦精', amount: '2', unit: '滴', category: 'modifier' }
+    ],
+    garnish: '樱桃',
+    flavorNotes: ['烟熏', '草本', '干型', '复杂'],
+    scene: ['商务', '餐后', '独饮'],
+    tags: ['经典', 'IBA', '威士忌']
+  },
+  {
+    id: 'penicillin',
+    name: '盘尼西林',
+    nameEn: 'Penicillin',
+    category: 'modern',
+    image: '',
+    glass: '古典杯',
+    structure: 'sour',
+    baseSpirit: 'whiskey',
+    strength: 3,
+    sweetness: 2,
+    abv: 24,
+    color: '深琥珀',
+    difficulty: 2,
+    rating: 4.6,
+    mbtiMatch: ['ISTP', 'INTP', 'INTJ'],
+    description: '烟熏艾莱浮层如雪茄烟圈压在蜂蜜姜香之上，现代酸酒的巅峰之作。',
+    story: '2005 年由纽约 Milk & Honey 的 Sam Ross 首创，是 21 世纪传播最广的新经典之一。烟熏威士忌"漂浮"技法让香气分层释放，被业内誉为"一杯会呼吸的酸酒"。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '苏格兰调和威士忌', amount: '50', unit: 'ml', category: 'base' },
+      { name: '艾莱单一麦芽威士忌', amount: '10', unit: 'ml', category: 'modifier' },
+      { name: '新鲜柠檬汁', amount: '22', unit: 'ml', category: 'acid' },
+      { name: '蜂蜜姜糖浆', amount: '15', unit: 'ml', category: 'sweetener' }
+    ],
+    garnish: '糖渍姜片',
+    flavorNotes: ['烟熏', '香料', '柑橘', '复杂'],
+    scene: ['独饮', '冬日', '商务'],
+    tags: ['现代', '烟熏', 'IBA', '新经典']
+  },
+  {
+    id: 'paper-plane',
+    name: '纸飞机',
+    nameEn: 'Paper Plane',
+    category: 'modern',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'sour',
+    baseSpirit: 'whiskey',
+    strength: 3,
+    sweetness: 2,
+    abv: 20,
+    color: '金色',
+    difficulty: 2,
+    rating: 4.5,
+    mbtiMatch: ['ENTP', 'ISFP', 'ENFP'],
+    description: '四等分的现代经典，苦甜酸三线并行如纸飞机的空中盘旋。',
+    story: '2008 年 Sam Ross 与 Sasha Petraske 为纽约 Mint 酒吧开业酒单共创，向 M.I.A. 的歌曲《Paper Planes》致敬。Amaro Nonino 的含蓄草本与阿佩罗的明亮微苦，构成"折纸般精确的平衡"。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '波本威士忌', amount: '30', unit: 'ml', category: 'base' },
+      { name: '阿佩罗', amount: '30', unit: 'ml', category: 'modifier' },
+      { name: '诺尼诺阿马罗', amount: '30', unit: 'ml', category: 'modifier' },
+      { name: '新鲜柠檬汁', amount: '30', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '无装饰',
+    flavorNotes: ['苦味', '柑橘', '草本', '甜美'],
+    scene: ['社交', '餐前'],
+    tags: ['现代', '新经典', 'IBA', '等分配方']
+  },
+  {
+    id: 'godfather',
+    name: '教父',
+    nameEn: 'Godfather',
+    category: 'spirit-forward',
+    image: '',
+    glass: '古典杯',
+    structure: 'old-fashioned',
+    baseSpirit: 'whiskey',
+    strength: 4,
+    sweetness: 3,
+    abv: 30,
+    color: '深琥珀',
+    difficulty: 1,
+    rating: 4.1,
+    mbtiMatch: ['ESTJ', 'ISTP', 'INTJ'],
+    description: '苏格兰麦芽与杏仁甜香的极简二重奏，如同教父的低语——温和而不可拒绝。',
+    story: '1970 年代流行于美国，传说因马龙·白兰度的钟爱而得名。仅两种原料的"两音符和弦"，是那个年代酒吧里最省事也最迷人的选择。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '苏格兰威士忌', amount: '45', unit: 'ml', category: 'base' },
+      { name: '杏仁利口酒', amount: '25', unit: 'ml', category: 'modifier' }
+    ],
+    garnish: '橙皮',
+    flavorNotes: ['坚果', '甜美', '干型', '复杂'],
+    scene: ['独饮', '餐后'],
+    tags: ['经典', '极简', '烈酒']
+  },
   // ==================== 朗姆酒 Rum ====================
   {
     id: 'mojito',
@@ -2052,6 +2652,132 @@ const COCKTAILS = [
     tags: ['Tiki', '烈酒', '复杂', '传奇']
   },
 
+  {
+    id: 'cuba-libre',
+    name: '自由古巴',
+    nameEn: 'Cuba Libre',
+    category: 'classic',
+    image: '',
+    glass: '高球杯',
+    structure: 'highball',
+    baseSpirit: 'rum',
+    strength: 2,
+    sweetness: 4,
+    abv: 10,
+    color: '深琥珀',
+    difficulty: 1,
+    rating: 3.9,
+    mbtiMatch: ['ESFP', 'ESTP', 'ESFJ'],
+    description: '朗姆、可乐与青柠的大众经典，一杯盛着百年前的自由呐喊。',
+    story: '1900 年美西战争后诞生于哈瓦那，"¡Por Cuba libre!"（为了自由的古巴！）是点酒时的祝词。可乐的工业化甜味与青柠的酸让朗姆酒从此走向了全世界。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '白朗姆酒', amount: '50', unit: 'ml', category: 'base' },
+      { name: '可乐', amount: '120', unit: 'ml', category: 'mixer' },
+      { name: '新鲜青柠汁', amount: '10', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '青柠角',
+    flavorNotes: ['甜美', '焦糖', '青柠', '气泡'],
+    scene: ['派对', '夏日', '社交'],
+    tags: ['经典', 'IBA', '长饮', '大众']
+  },
+  {
+    id: 'hurricane',
+    name: '飓风',
+    nameEn: 'Hurricane',
+    category: 'tropical',
+    image: '',
+    glass: '飓风杯',
+    structure: 'tiki',
+    baseSpirit: 'rum',
+    strength: 4,
+    sweetness: 4,
+    abv: 16,
+    color: '粉红',
+    difficulty: 2,
+    rating: 4.0,
+    mbtiMatch: ['ESFP', 'ENFP', 'ESFJ'],
+    description: '双朗姆与百香果的飓风级派对酒，以标志性的花形酒杯闻名于世。',
+    story: '1940 年代新奥尔良 Pat O\'Brien\'s 酒吧为消化积压的低档朗姆酒而创，配以独特的飓风灯形杯。它是 Mardi Gras 狂欢节的标配，一杯下去"眼前真的会出现风暴"。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '白朗姆酒', amount: '45', unit: 'ml', category: 'base' },
+      { name: '黑朗姆酒', amount: '45', unit: 'ml', category: 'base' },
+      { name: '百香果汁', amount: '30', unit: 'ml', category: 'acid' },
+      { name: '橙汁', amount: '30', unit: 'ml', category: 'acid' },
+      { name: '新鲜青柠汁', amount: '15', unit: 'ml', category: 'acid' },
+      { name: '红石榴糖浆', amount: '15', unit: 'ml', category: 'sweetener' }
+    ],
+    garnish: '橙片',
+    flavorNotes: ['热带水果', '果味', '甜美', '清爽'],
+    scene: ['派对', '夏日', '社交'],
+    tags: ['热带', '派对', 'IBA', '大杯']
+  },
+  {
+    id: 'jungle-bird',
+    name: '丛林鸟',
+    nameEn: 'Jungle Bird',
+    category: 'tropical',
+    image: '',
+    glass: '古典杯',
+    structure: 'tiki',
+    baseSpirit: 'rum',
+    strength: 3,
+    sweetness: 3,
+    abv: 18,
+    color: '深琥珀',
+    difficulty: 2,
+    rating: 4.2,
+    mbtiMatch: ['INFJ', 'ISTP', 'INTJ'],
+    description: '金巴利的苦味闯入菠萝的甜浪，热带风情里的深邃反转。',
+    story: '1978 年诞生于吉隆坡希尔顿酒店 Aviary Bar 的迎宾酒，杯沿的纸质扇尾鸟装饰是标志。它是少数把金巴利带入提基世界的先驱，苦甜平衡让它从酒店赠饮逆袭为全球鸡尾酒单常客。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '黑朗姆酒', amount: '45', unit: 'ml', category: 'base' },
+      { name: '金巴利', amount: '22', unit: 'ml', category: 'modifier' },
+      { name: '菠萝汁', amount: '45', unit: 'ml', category: 'acid' },
+      { name: '新鲜青柠汁', amount: '15', unit: 'ml', category: 'acid' },
+      { name: '单糖浆', amount: '15', unit: 'ml', category: 'sweetener' }
+    ],
+    garnish: '菠萝角',
+    flavorNotes: ['热带水果', '菠萝', '苦味', '甜美'],
+    scene: ['夏日', '派对', '独饮'],
+    tags: ['热带', '提基', 'IBA', '苦甜']
+  },
+  {
+    id: 'el-presidente',
+    name: '总统',
+    nameEn: 'El Presidente',
+    category: 'modern',
+    image: '',
+    glass: '马天尼杯',
+    structure: 'martini',
+    baseSpirit: 'rum',
+    strength: 3,
+    sweetness: 3,
+    abv: 26,
+    color: '金色',
+    difficulty: 2,
+    rating: 4.2,
+    mbtiMatch: ['ENTJ', 'ENFJ', 'ESFJ'],
+    description: '古巴黄金年代的总统级优雅，朗姆酒版的"完美马天尼"。',
+    story: '1920 年代哈瓦那禁酒令避风港时期的作品，据说因总统 Gerardo Machado 钟爱而得名。当时《Savoy 鸡尾酒书》称其为"古巴的完美鸡尾酒"，是朗姆酒精致化路线的巅峰。',
+    method: 'stir',
+    methodLabel: '搅拌法',
+    ingredients: [
+      { name: '白朗姆酒', amount: '45', unit: 'ml', category: 'base' },
+      { name: '橙味美思', amount: '20', unit: 'ml', category: 'modifier' },
+      { name: '君度橙酒', amount: '15', unit: 'ml', category: 'modifier' },
+      { name: '红石榴糖浆', amount: '5', unit: 'ml', category: 'sweetener' }
+    ],
+    garnish: '橙皮',
+    flavorNotes: ['橙子', '甜美', '果味', '干型'],
+    scene: ['商务', '餐前', '社交'],
+    tags: ['经典', 'IBA', '哈瓦那']
+  },
   // ==================== 龙舌兰 Tequila ====================
   {
     id: 'margarita',
@@ -2205,6 +2931,66 @@ const COCKTAILS = [
     tags: ['现代', '烟熏', '改编', '个性']
   },
 
+  {
+    id: 'tommys-margarita',
+    name: '汤米的玛格丽特',
+    nameEn: "Tommy's Margarita",
+    category: 'modern',
+    image: '',
+    glass: '古典杯',
+    structure: 'margarita',
+    baseSpirit: 'tequila',
+    strength: 3,
+    sweetness: 2,
+    abv: 22,
+    color: '淡绿',
+    difficulty: 1,
+    rating: 4.5,
+    mbtiMatch: ['ISFP', 'ISTP', 'ESFP'],
+    description: '去掉橙酒的极简玛格丽特，让龙舌兰的植物本味站上主角位。',
+    story: '1990 年代旧金山 Tommy\'s 餐厅的 Julio Bermejo 首创，用龙舌兰糖浆替代君度橙酒。这杯"减法鸡尾酒"重新定义了玛格丽特，被票选为 21 世纪最具影响力的鸡尾酒之一。',
+    method: 'shake',
+    methodLabel: '摇和法',
+    ingredients: [
+      { name: '龙舌兰酒', amount: '60', unit: 'ml', category: 'base' },
+      { name: '新鲜青柠汁', amount: '30', unit: 'ml', category: 'acid' },
+      { name: '龙舌兰糖浆', amount: '15', unit: 'ml', category: 'sweetener' }
+    ],
+    garnish: '青柠轮',
+    flavorNotes: ['青柠', '柑橘', '清爽', '果味'],
+    scene: ['夏日', '社交', '户外'],
+    tags: ['现代', 'IBA', '新经典', '极简']
+  },
+  {
+    id: 'batanga',
+    name: '巴坦加',
+    nameEn: 'Batanga',
+    category: 'modern',
+    image: '',
+    glass: '高球杯',
+    structure: 'highball',
+    baseSpirit: 'tequila',
+    strength: 2,
+    sweetness: 4,
+    abv: 12,
+    color: '深琥珀',
+    difficulty: 1,
+    rating: 4.0,
+    mbtiMatch: ['ESTP', 'ESFP', 'ENTP'],
+    description: '龙舌兰与可乐的墨西哥乡土混搭，盐边是点睛的魔法。',
+    story: '1960 年代诞生于 Tequila 镇的 La Capilla 酒吧，老板 Don Javier Delgado Corona 用长刀搅拌而闻名。"Batanga"在当地方言里意指"强壮的男孩"，是墨西哥乡村酒吧的灵魂饮品。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '龙舌兰酒', amount: '50', unit: 'ml', category: 'base' },
+      { name: '可乐', amount: '120', unit: 'ml', category: 'mixer' },
+      { name: '新鲜青柠汁', amount: '15', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '盐边',
+    flavorNotes: ['焦糖', '青柠', '甜美', '气泡'],
+    scene: ['派对', '夏日', '社交'],
+    tags: ['现代', '墨西哥', '长饮']
+  },
   // ==================== 伏特加 Vodka ====================
   {
     id: 'espresso-martini',
@@ -2363,6 +3149,131 @@ const COCKTAILS = [
     tags: ['奶油', '甜品', '电影', '丝滑']
   },
 
+  {
+    id: 'black-russian',
+    name: '黑俄罗斯',
+    nameEn: 'Black Russian',
+    category: 'spirit-forward',
+    image: '',
+    glass: '古典杯',
+    structure: 'old-fashioned',
+    baseSpirit: 'vodka',
+    strength: 4,
+    sweetness: 3,
+    abv: 26,
+    color: '深琥珀',
+    difficulty: 1,
+    rating: 4.0,
+    mbtiMatch: ['INTJ', 'ISTP', 'ENTJ'],
+    description: '只有两种原料的深邃短饮，如午夜咖啡般冷峻直接。',
+    story: '1949 年布鲁塞尔大都会酒店，调酒师 Gustave Tops 为美国驻卢森堡大使 Pearl Mesta 创制。冷战初期的命名自带时代张力——"黑色"是咖啡利口酒，"俄罗斯"是伏特加。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '伏特加', amount: '45', unit: 'ml', category: 'base' },
+      { name: '咖啡利口酒', amount: '25', unit: 'ml', category: 'modifier' }
+    ],
+    garnish: '柠檬皮',
+    flavorNotes: ['咖啡', '焦糖', '甜美', '干型'],
+    scene: ['独饮', '餐后'],
+    tags: ['经典', 'IBA', '极简', '餐后酒']
+  },
+  {
+    id: 'screwdriver',
+    name: '螺丝刀',
+    nameEn: 'Screwdriver',
+    category: 'classic',
+    image: '',
+    glass: '高球杯',
+    structure: 'highball',
+    baseSpirit: 'vodka',
+    strength: 2,
+    sweetness: 3,
+    abv: 11,
+    color: '金色',
+    difficulty: 1,
+    rating: 3.8,
+    mbtiMatch: ['ESFJ', 'ESFP', 'ENFJ'],
+    description: '伏特加与橙汁的黄金比例，简单到不可能失败的大众经典。',
+    story: '二战后伊朗油田的美国工人们用螺丝刀搅拌伏特加橙汁而得名——工人智慧版的鸡尾酒。1970 年代随着"Harvey Wallbanger"变体风靡，但原版始终是简单主义的代名词。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '伏特加', amount: '45', unit: 'ml', category: 'base' },
+      { name: '橙汁', amount: '90', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '橙片',
+    flavorNotes: ['橙子', '甜美', '果味'],
+    scene: ['夏日', '社交', '派对'],
+    tags: ['经典', 'IBA', '简单', '早午餐']
+  },
+  {
+    id: 'sex-on-the-beach',
+    name: '性感沙滩',
+    nameEn: 'Sex on the Beach',
+    category: 'tropical',
+    image: '',
+    glass: '高球杯',
+    structure: 'highball',
+    baseSpirit: 'vodka',
+    strength: 2,
+    sweetness: 4,
+    abv: 11,
+    color: '粉红',
+    difficulty: 1,
+    rating: 3.9,
+    mbtiMatch: ['ESFP', 'ENFP', 'ESFJ'],
+    description: '蜜桃与蔓越莓的度假风味，名字比配方更早红遍全球。',
+    story: '1980 年代诞生于美国佛罗里达，一说由调酒师 Ted Pizio 为推广蜜桃利口酒所创，名字源自"春假沙滩"的联想，随着旅游潮传遍了地中海沿岸的每一座度假酒店。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '伏特加', amount: '40', unit: 'ml', category: 'base' },
+      { name: '蜜桃利口酒', amount: '20', unit: 'ml', category: 'modifier' },
+      { name: '蔓越莓汁', amount: '40', unit: 'ml', category: 'acid' },
+      { name: '橙汁', amount: '40', unit: 'ml', category: 'acid' }
+    ],
+    garnish: '橙片',
+    flavorNotes: ['果味', '莓果', '甜美', '清爽'],
+    scene: ['派对', '夏日', '社交'],
+    tags: ['现代', '派对', 'IBA', '度假']
+  },
+  // 多基酒款，按传统主基调归伏特加
+  {
+    id: 'long-island-iced-tea',
+    name: '长岛冰茶',
+    nameEn: 'Long Island Iced Tea',
+    category: 'modern',
+    image: '',
+    glass: '柯林斯杯',
+    structure: 'collins',
+    baseSpirit: 'vodka',
+    strength: 5,
+    sweetness: 3,
+    abv: 22,
+    color: '深琥珀',
+    difficulty: 2,
+    rating: 4.1,
+    mbtiMatch: ['ESTP', 'ENTP', 'ESFP'],
+    description: '五种基酒的强力联盟，柠檬与可乐伪装成温和的"冰茶"。',
+    story: '1970 年代纽约长岛橡树海滩酒庄酒吧的 Bob Butt 在调酒竞赛中首创。看似冰茶实则烈性十足，是全球夜店的"后劲之王"，也常年位列"最易翻车"鸡尾酒榜首。',
+    method: 'build',
+    methodLabel: '直调法',
+    ingredients: [
+      { name: '伏特加', amount: '15', unit: 'ml', category: 'base' },
+      { name: '金酒', amount: '15', unit: 'ml', category: 'base' },
+      { name: '白朗姆酒', amount: '15', unit: 'ml', category: 'base' },
+      { name: '龙舌兰酒', amount: '15', unit: 'ml', category: 'base' },
+      { name: '君度橙酒', amount: '15', unit: 'ml', category: 'modifier' },
+      { name: '新鲜柠檬汁', amount: '25', unit: 'ml', category: 'acid' },
+      { name: '单糖浆', amount: '15', unit: 'ml', category: 'sweetener' },
+      { name: '可乐', amount: '30', unit: 'ml', category: 'mixer' }
+    ],
+    garnish: '柠檬片',
+    flavorNotes: ['柑橘', '甜美', '复杂', '焦糖'],
+    scene: ['派对', '社交'],
+    tags: ['现代', 'IBA', '烈性', '派对']
+  },
   // ==================== 补充经典 ====================
   {
     id: 'aperol-spritz',
@@ -2412,6 +3323,7 @@ const COCKTAILS = [
 
 const MBTI_PROFILES = {
   INTJ: {
+    myth: '哈迪斯',
     name: '建筑师',
     title: '战略家',
     description: '富有想象力和战略性的思考者，对一切都有计划。',
@@ -2421,6 +3333,7 @@ const MBTI_PROFILES = {
     suitable: '商务洽谈、深夜独酌'
   },
   INTP: {
+    myth: '普罗米修斯',
     name: '逻辑学家',
     title: '发明家',
     description: '具有创新精神的思考者，对知识有着永不满足的渴望。',
@@ -2430,6 +3343,7 @@ const MBTI_PROFILES = {
     suitable: '实验室风格酒吧、创意调酒体验'
   },
   ENTJ: {
+    myth: '宙斯',
     name: '指挥官',
     title: '领导者',
     description: '大胆、富有想象力的领导者，总能找到解决问题的方法。',
@@ -2439,6 +3353,7 @@ const MBTI_PROFILES = {
     suitable: '高端商务酒吧、庆功宴'
   },
   ENTP: {
+    myth: '赫尔墨斯',
     name: '辩论家',
     title: '发明家',
     description: '聪明好奇的思考者，不会被智力挑战吓倒。',
@@ -2448,6 +3363,7 @@ const MBTI_PROFILES = {
     suitable: '潮流酒吧、社交聚会'
   },
   INFJ: {
+    myth: '阿波罗',
     name: '提倡者',
     title: '守护者',
     description: '安静而神秘，但激励人心且不知疲倦的理想主义者。',
@@ -2457,6 +3373,7 @@ const MBTI_PROFILES = {
     suitable: '安静的小酒馆、私密聚会'
   },
   INFP: {
+    myth: '珀耳塞福涅',
     name: '调停者',
     title: '理想主义者',
     description: '诗意、善良的利他主义者，总是热衷于帮助美好的事业。',
@@ -2466,6 +3383,7 @@ const MBTI_PROFILES = {
     suitable: '文艺咖啡馆、日落露台'
   },
   ENFJ: {
+    myth: '得墨忒耳',
     name: '主人公',
     title: '导师',
     description: '富有魅力且鼓舞人心的领导者，能让人为之着迷。',
@@ -2475,6 +3393,7 @@ const MBTI_PROFILES = {
     suitable: '主题派对、社交晚宴'
   },
   ENFP: {
+    myth: '狄俄尼索斯',
     name: '竞选者',
     title: '探索者',
     description: '热情、富有创造力的自由灵魂，总能找到微笑的理由。',
@@ -2484,6 +3403,7 @@ const MBTI_PROFILES = {
     suitable: '泳池派对、音乐节、旅行酒吧'
   },
   ISTJ: {
+    myth: '忒弥斯',
     name: '物流师',
     title: '守护者',
     description: '务实且注重事实的个人，其可靠性不容置疑。',
@@ -2493,6 +3413,7 @@ const MBTI_PROFILES = {
     suitable: '传统英式酒吧、威士忌品鉴会'
   },
   ISFJ: {
+    myth: '赫拉',
     name: '守卫者',
     title: '守护者',
     description: '非常专注和温暖的守护者，随时准备保护所爱之人。',
@@ -2502,6 +3423,7 @@ const MBTI_PROFILES = {
     suitable: '温馨的家庭聚会、闺蜜之夜'
   },
   ESTJ: {
+    myth: '雅典娜',
     name: '总经理',
     title: '执行者',
     description: '优秀的管理者，在管理事务或人员方面无与伦比。',
@@ -2511,6 +3433,7 @@ const MBTI_PROFILES = {
     suitable: '商务晚宴、威士忌酒吧'
   },
   ESFJ: {
+    myth: '赫斯提亚',
     name: '执政官',
     title: '照顾者',
     description: '非常关心他人，受欢迎且善于社交，总是乐于助人。',
@@ -2520,6 +3443,7 @@ const MBTI_PROFILES = {
     suitable: '生日派对、欢乐时光'
   },
   ISTP: {
+    myth: '赫菲斯托斯',
     name: '鉴赏家',
     title: '实干家',
     description: '大胆而实际的实验者，精通各种工具。',
@@ -2529,6 +3453,7 @@ const MBTI_PROFILES = {
     suitable: '手工调酒吧、户外烧烤'
   },
   ISFP: {
+    myth: '阿尔忒弥斯',
     name: '探险家',
     title: '艺术家',
     description: '灵活而富有魅力的艺术家，随时准备探索和体验新事物。',
@@ -2538,6 +3463,7 @@ const MBTI_PROFILES = {
     suitable: '艺术展酒会、网红打卡酒吧'
   },
   ESTP: {
+    myth: '阿瑞斯',
     name: '企业家',
     title: '冒险家',
     description: '聪明、精力充沛、非常敏锐，真正享受冒险的乐趣。',
@@ -2547,6 +3473,7 @@ const MBTI_PROFILES = {
     suitable: '运动酒吧、电音派对'
   },
   ESFP: {
+    myth: '阿芙洛狄忒',
     name: '表演者',
     title: '表演家',
     description: '自发的、精力充沛的表演者，生活永远不会在他们身边无聊。',
@@ -2732,25 +3659,96 @@ function pickNoConflict(pool, usedFlavors, fallback = false) {
  * @param {string[]} history - 已生成的名称列表（去重用）
  * @returns {Object} 完整的鸡尾酒对象
  */
-function generateCocktail(mbtiType, intensities, history = []) {
+function generateCocktail(mbtiType, intensities, history = [], options = {}) {
+  const mythMode = options.mythMode !== false; // v1.1 神话命名开关，默认开
   const dims = parseType(mbtiType);
   let attempts = 0;
 
   while (attempts < 20) {
     attempts++;
-    const cocktail = tryGenerate(dims, intensities, mbtiType);
+    const cocktail = tryGenerate(dims, intensities, mbtiType, mythMode);
     if (!history.includes(cocktail.id) && !history.includes(cocktail.name)) {
       return cocktail;
     }
   }
   // 如果20次都重复（极小概率），强制加后缀
-  const c = tryGenerate(dims, intensities, mbtiType);
+  const c = tryGenerate(dims, intensities, mbtiType, mythMode);
   c.id += '-' + Date.now();
   c.name += ' ' + (history.length + 1);
   return c;
 }
 
-function tryGenerate(dims, intensities, mbtiType) {
+// ==================== 合体特调生成（v1.1 碰杯模式） ====================
+
+/**
+ * 双人合体 AI 特调：两组人格维度混合后复用现有生成管线（PRD 7.2 碰杯模式）
+ * 混合策略：逐维取平均；合体类型逐对取占比高侧（平局随机），仅用于结构/基酒偏好加权
+ * @param {string} typeA - 人格 A 类型（4 字母）
+ * @param {Object} intA - 人格 A 维度强度
+ * @param {string} typeB - 人格 B 类型
+ * @param {Object} intB - 人格 B 维度强度
+ * @param {string[]} history - 已生成名称列表（去重用）
+ * @param {Object} options - { mythMode }
+ * @returns {Object} 合体鸡尾酒对象（_isDuo + _duoInfo 标记）
+ */
+function generateDuoCocktail(typeA, intA, typeB, intB, history = [], options = {}) {
+  const mythMode = options.mythMode !== false;
+
+  // 1. 维度混合：逐维取平均
+  const mixed = {};
+  for (const d of ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P']) {
+    mixed[d] = Math.round(((intA[d] ?? 50) + (intB[d] ?? 50)) / 2);
+  }
+
+  // 2. 合体类型：逐对维度取占比高侧，平局随机（符合 AI 特调"独一无二"）
+  const duoDims = [['E','I'], ['S','N'], ['T','F'], ['J','P']].map(([a, b]) => {
+    if (mixed[a] > mixed[b]) return a;
+    if (mixed[b] > mixed[a]) return b;
+    return Math.random() < 0.5 ? a : b;
+  });
+  const duoType = duoDims.join('');
+
+  const profileA = MBTI_PROFILES[typeA];
+  const profileB = MBTI_PROFILES[typeB];
+  const mythA = profileA?.myth || typeA;
+  const mythB = profileB?.myth || typeB;
+  const titleA = profileA?.title || typeA;
+  const titleB = profileB?.title || typeB;
+
+  // 3. 命名：体现两人格张力（神话开 → 双原型并列；关 → 双昵称并列）
+  const pickFlavorWord = () => pickRandom(FLAVOR_KEYWORDS[pickRandom(Object.keys(FLAVOR_KEYWORDS))]);
+  const duoName = () => mythMode
+    ? (Math.random() < 0.6
+        ? `${mythA} × ${mythB}${pickRandom(MYTH_SUFFIXES)}`
+        : `${mythA}与${mythB}的${pickFlavorWord()}`)
+    : `${titleA} × ${titleB}${pickRandom(['协奏曲', '变奏', '狂想', '回响', '序曲'])}`;
+
+  // 4. 完全复用单人装配管线（结构/基酒/配料/冲突检测），去重照常
+  let cocktail = null;
+  let attempts = 0;
+  while (attempts < 20) {
+    attempts++;
+    cocktail = tryGenerate(duoDims, mixed, duoType, mythMode);
+    cocktail.name = duoName();
+    if (!history.includes(cocktail.id) && !history.includes(cocktail.name)) break;
+  }
+  if (history.includes(cocktail.name) || history.includes(cocktail.id)) {
+    cocktail.id += '-duo-' + Date.now();
+    cocktail.name += ' ·碰杯 ' + (history.length + 1);
+  }
+
+  // 5. 覆写叙事层：双人叙事 + 双类型匹配
+  cocktail.nameEn = 'AI Duo: ' + cocktail.structure.charAt(0).toUpperCase() + cocktail.structure.slice(1);
+  cocktail.mbtiMatch = [typeA, typeB];
+  cocktail.description = `由 ${typeA}（${titleA}）与 ${typeB}（${titleB}）的人格张力共同调就，${cocktail.structure} 结构在两种气质之间寻找平衡。`;
+  cocktail.story = `这是一杯为 ${mythA}与${mythB} 碰杯而生的合体特调——两组人格维度混合后由风味引擎即兴演绎，每一次碰杯都是独一无二的配方。`;
+  cocktail.tags = [...new Set([...(cocktail.tags || []), '合体特调'])];
+  cocktail._isDuo = true;
+  cocktail._duoInfo = { typeA, typeB };
+  return cocktail;
+}
+
+function tryGenerate(dims, intensities, mbtiType, mythMode = true) {
   // 1. 选结构（根据维度偏好加权）
   const structureScores = {};
   for (const [sname] of Object.entries(STRUCTURE_TEMPLATES)) {
@@ -2845,7 +3843,7 @@ function tryGenerate(dims, intensities, mbtiType) {
   const flavorNotes = [...new Set(usedFlavors)].slice(0, 5);
 
   // 8. 命名
-  const name = generateName(mbtiType, flavorNotes, structure);
+  const name = generateName(mbtiType, flavorNotes, structure, mythMode);
 
   // 9. 难度
   const difficulty = ingredients.length <= 3 ? 1 : ingredients.length <= 5 ? 2 : 3;
@@ -2880,7 +3878,12 @@ function tryGenerate(dims, intensities, mbtiType) {
 }
 
 // ==================== 命名生成 ====================
-function generateName(mbtiType, flavorNotes, structure) {
+/**
+ * 生成酒款名称
+ * @param {boolean} mythMode - v1.1 神话命名开关：仅影响命名层，不影响评分与配方（PRD 7.2 设计边界）
+ *   双模式混搭：60% 神话式（哈迪斯之谋）+ 40% 混搭式（哈迪斯的暗涌）
+ */
+function generateName(mbtiType, flavorNotes, structure, mythMode = true) {
   const profile = MBTI_PROFILES[mbtiType];
   const title = profile?.title || mbtiType;
 
@@ -2892,17 +3895,61 @@ function generateName(mbtiType, flavorNotes, structure) {
   const suffixes = ['变奏', '特调', '协奏曲', '迷雾', '暗涌', '狂想', '回响', '序曲'];
   const suffix = pickRandom(suffixes);
 
+  if (mythMode && profile?.myth) {
+    return Math.random() < 0.6
+      ? profile.myth + pickRandom(MYTH_SUFFIXES)
+      : profile.myth + '的' + flavorWord;
+  }
   return title + flavorWord + suffix;
 }
 
 // ==================== 对外 API ====================
 
+// ==================== 味觉档案修正（v1.1 反向微调，PRD 7.2） ====================
+
+/**
+ * 根据用户味觉偏好向量计算单款酒的分数修正值（-5 ~ +5）
+ * 偏好向量按属性聚合（越用越懂你）：{ baseSpirit:{gin:2}, structure:{sour:1}, flavor:{花香:3} }
+ * 权重：基酒命中 ×1.5（|计数|封顶2）、结构命中 ×1.0（封顶2）、风味标签命中 ×0.5（命中数封顶2）
+ * @param {Object} cocktail
+ * @param {Object|null} taste - 偏好向量
+ * @returns {number} -5 ~ +5 的整数修正值
+ */
+function applyTasteAdjust(cocktail, taste) {
+  if (!taste) return 0;
+  let adjust = 0;
+
+  const bs = taste.baseSpirit?.[cocktail.baseSpirit] || 0;
+  if (bs) adjust += Math.sign(bs) * Math.min(Math.abs(bs), 2) * 1.5;
+
+  const st = taste.structure?.[cocktail.structure] || 0;
+  if (st) adjust += Math.sign(st) * Math.min(Math.abs(st), 2) * 1.0;
+
+  const fl = taste.flavor || {};
+  let flavorHits = 0;
+  for (const f of (cocktail.flavorNotes || [])) {
+    const v = fl[f] || 0;
+    if (v) flavorHits += v > 0 ? 1 : -1;
+  }
+  adjust += Math.max(-2, Math.min(2, flavorHits)) * 0.5;
+
+  return Math.round(Math.max(-5, Math.min(5, adjust)));
+}
+
 function getRecommendations(mbtiType, options = {}) {
   const intensities = options.intensities || null;
+  const taste = options.taste || null;   // v1.1 味觉档案
   const scored = COCKTAILS.map(cocktail => {
     const algorithmScore = calculateMatchScore(cocktail, mbtiType, intensities);
     const exactMatch = cocktail.mbtiMatch && cocktail.mbtiMatch.includes(mbtiType);
-    return { ...cocktail, _score: Math.min(99, Math.round(algorithmScore * (exactMatch ? 1.2 : 1.0))), _exact: exactMatch };
+    const base = Math.min(99, Math.round(algorithmScore * (exactMatch ? 1.2 : 1.0)));
+    const adjust = applyTasteAdjust(cocktail, taste);
+    return {
+      ...cocktail,
+      _score: Math.max(0, Math.min(99, base + adjust)),
+      _exact: exactMatch,
+      _tasteAdjust: adjust
+    };
   });
 
   // 全量已排序列表（分数降序，平分时 rating 高者在前），前端自行分页展示
@@ -2919,8 +3966,8 @@ function getAllMethods() {
 }
 
 const engine = {
-  calculateMatchScore, getRecommendations, generateCocktail,
-  getProfile, getAllMBTITypes, getAllMethods
+  calculateMatchScore, getRecommendations, generateCocktail, generateDuoCocktail,
+  applyTasteAdjust, getProfile, getAllMBTITypes, getAllMethods
 };
 
 // ==================== app.js ====================
@@ -2944,6 +3991,12 @@ const State = {
   wikiMethod: 'all',
   wikiSearch: '',
   generatedHistory: [], // AI 生成酒名称历史（去重）
+  mythEnabled: true,    // 神话命名开关（v1.1，默认开）
+  taste: { baseSpirit: {}, structure: {}, flavor: {}, verdicts: {} }, // 味觉档案（v1.1）
+  // 碰杯模式（v1.1）：双人输入态（仅内存，不做持久化）
+  cheersA: { intensities: { E: 50, I: 50, S: 50, N: 50, T: 50, F: 50, J: 50, P: 50 }, type: null },
+  cheersB: { intensities: { E: 50, I: 50, S: 50, N: 50, T: 50, F: 50, J: 50, P: 50 }, type: null },
+  duoCocktail: null,    // 当前会话的合体特调
   recList: [],          // 当前类型的全量已排序推荐（带 _score）
   recShownIds: [],      // 本轮已展示过的推荐酒款 id
   recCurrent: []        // 当前展示的一组推荐
@@ -2954,6 +4007,8 @@ const State = {
 const FAV_KEY = 'mbti-cocktail-favorites';
 const GEN_HISTORY_KEY = 'mbti-cocktail-gen-history';
 const LAST_STATE_KEY = 'mbti-cocktail-last-state';
+const MYTH_KEY = 'mbti-cocktail-myth-switch';
+const TASTE_KEY = 'mbti-cocktail-taste';
 
 function favId(f) { return f.type === 'ai' ? f.cocktail.id : f.id; }
 
@@ -2978,14 +4033,75 @@ function saveFavs() {
   catch { /* ignore */ }
 }
 
+// AI 生成历史（v1.1 存储升级）：[{ name, cocktail, ts }]，兼容旧版纯名称字符串数组
 function loadGenHistory() {
-  try { State.generatedHistory = JSON.parse(localStorage.getItem(GEN_HISTORY_KEY) || '[]'); }
-  catch { State.generatedHistory = []; }
+  try {
+    const raw = JSON.parse(localStorage.getItem(GEN_HISTORY_KEY) || '[]');
+    State.generatedHistory = raw
+      .map(h => typeof h === 'string' ? { name: h, cocktail: null, ts: 0 } : h) // 旧格式迁移（无完整对象，仅保留去重名）
+      .filter(h => h && h.name);
+  } catch { State.generatedHistory = []; }
 }
 
 function saveGenHistory() {
   try { localStorage.setItem(GEN_HISTORY_KEY, JSON.stringify(State.generatedHistory)); }
   catch { /* ignore */ }
+}
+
+// engine 去重只认名称数组
+function genHistoryNames() { return State.generatedHistory.map(h => h.name); }
+
+// 神话命名开关（v1.1）：仅影响 AI 命名层，不影响推荐算法
+function loadMythSwitch() {
+  try { State.mythEnabled = localStorage.getItem(MYTH_KEY) !== 'off'; }
+  catch { State.mythEnabled = true; }
+}
+
+function saveMythSwitch() {
+  try { localStorage.setItem(MYTH_KEY, State.mythEnabled ? 'on' : 'off'); }
+  catch { /* ignore */ }
+}
+
+// ==================== 味觉档案（v1.1 反向微调，PRD 7.2） ====================
+// 👍/👎 反馈聚合为属性偏好向量（基酒/结构/风味标签净计数），推荐分据此做 ±5 小幅修正。
+// verdicts 记录单酒反馈（1=👍 / -1=👎）用于界面回显。全部仅存 localStorage。
+function loadTaste() {
+  try {
+    const t = JSON.parse(localStorage.getItem(TASTE_KEY) || 'null');
+    if (t && typeof t === 'object') {
+      State.taste = {
+        baseSpirit: t.baseSpirit || {},
+        structure: t.structure || {},
+        flavor: t.flavor || {},
+        verdicts: t.verdicts || {}
+      };
+    }
+  } catch { /* ignore */ }
+}
+
+function saveTaste() {
+  try { localStorage.setItem(TASTE_KEY, JSON.stringify(State.taste)); }
+  catch { /* ignore */ }
+}
+
+function addTasteCount(obj, key, delta) {
+  obj[key] = (obj[key] || 0) + delta;
+  if (obj[key] === 0) delete obj[key]; // 归零清理，控制体积
+}
+
+/** 应用/切换/取消一次反馈：verdict ∈ {1: 👍, -1: 👎, 0: 取消} */
+function applyTasteVerdict(cocktail, verdict) {
+  const t = State.taste;
+  const prev = t.verdicts[cocktail.id] || 0;
+  const delta = verdict - prev;
+  if (delta !== 0) {
+    addTasteCount(t.baseSpirit, cocktail.baseSpirit, delta);
+    addTasteCount(t.structure, cocktail.structure, delta);
+    for (const f of (cocktail.flavorNotes || [])) addTasteCount(t.flavor, f, delta);
+  }
+  if (verdict === 0) delete t.verdicts[cocktail.id];
+  else t.verdicts[cocktail.id] = verdict;
+  saveTaste();
 }
 
 function isFav(id) { return State.favorites.some(f => favId(f) === id); }
@@ -3023,6 +4139,7 @@ function render() {
   const r = State.route;
   if (r === 'home') pageId = 'page-home';
   else if (r === 'result') { pageId = 'page-result'; renderResult(); }
+  else if (r === 'cheers') { pageId = 'page-cheers'; renderCheers(); }
   else if (r === 'detail') { pageId = 'page-detail'; renderDetail(); }
   else if (r === 'wiki') { pageId = 'page-wiki'; renderWiki(); }
   else if (r === 'favorites') { pageId = 'page-favorites'; renderFavorites(); }
@@ -3031,7 +4148,7 @@ function render() {
   document.getElementById(pageId)?.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => {
     const nr = n.dataset.route;
-    n.classList.toggle('active', nr === r || (r === 'result' && nr === 'home') || (r === 'detail' && nr === 'wiki'));
+    n.classList.toggle('active', nr === r || (r === 'result' && nr === 'home') || (r === 'cheers' && nr === 'home') || (r === 'detail' && nr === 'wiki'));
   });
 }
 
@@ -3131,7 +4248,7 @@ function restoreLastState() {
 function renderResult() {
   const type = State.mbtiType;
   const profile = engine.getProfile(type);
-  State.recList = engine.getRecommendations(type, { intensities: State.intensities });
+  State.recList = engine.getRecommendations(type, { intensities: State.intensities, taste: State.taste });
   State.recShownIds = State.recList.slice(0, 5).map(c => c.id);
   State.recCurrent = State.recList.slice(0, 5);
 
@@ -3190,8 +4307,8 @@ window.shuffleRecs = function() {
 };
 
 function generateAndShowAI() {
-  const cocktail = engine.generateCocktail(State.mbtiType, State.intensities, State.generatedHistory);
-  State.generatedHistory.push(cocktail.name);
+  const cocktail = engine.generateCocktail(State.mbtiType, State.intensities, genHistoryNames(), { mythMode: State.mythEnabled });
+  State.generatedHistory.push({ name: cocktail.name, cocktail, ts: Date.now() });
   State.aiCocktail = cocktail;  // 保存到全局状态
   saveGenHistory();
   document.getElementById('ai-result').innerHTML = cocktailCard(cocktail, { ai: true });
@@ -3199,6 +4316,126 @@ function generateAndShowAI() {
 
 window.regenerateAI = function() {
   generateAndShowAI();
+  showToast('已生成全新配方 ✨');
+};
+
+// ==================== 碰杯模式（v1.1 双人合体特调） ====================
+const DIM_LABELS = { E: 'E 外向', I: 'I 内向', S: 'S 实感', N: 'N 直觉', T: 'T 思维', F: 'F 情感', J: 'J 判断', P: 'P 感知' };
+
+function cheersSliderHTML(side) {
+  return sliderPairs.map(pair => `
+    <div class="slider-group">
+      <div class="slider-labels">
+        <span class="slider-label-left">${DIM_LABELS[pair.left]}</span>
+        <span class="slider-label-right">${DIM_LABELS[pair.right]}</span>
+      </div>
+      <div class="slider-track">
+        <input type="range" min="0" max="100" value="${State['cheers' + side].intensities[pair.left]}" class="slider-input" id="cheer-${side}-${pair.id}" oninput="onCheersSliderChange('${side}')">
+        <div class="slider-fill" id="cheer-fill-${side}-${pair.id}"></div>
+      </div>
+      <div class="slider-values">
+        <span id="cheer-val-${side}-${pair.left}">${State['cheers' + side].intensities[pair.left]}%</span>
+        <span id="cheer-val-${side}-${pair.right}">${State['cheers' + side].intensities[pair.right]}%</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderCheers() {
+  document.getElementById('cheers-columns').innerHTML = `
+    <div class="cheer-column">
+      <div class="cheer-col-title">🥂 人格 A</div>
+      <div class="cheer-type-preview" id="cheer-preview-A">${State.cheersA.type || '----'}</div>
+      ${cheersSliderHTML('A')}
+      <button class="btn btn-outline cheer-picker-btn" onclick="toggleCheersPicker('A')">🎯 直选类型</button>
+      <div id="cheer-picker-A" class="type-picker hidden">
+        <p class="picker-label">选择人格 A 的类型</p>
+        <div class="type-grid" id="cheer-grid-A"></div>
+      </div>
+    </div>
+    <div class="cheers-vs">×</div>
+    <div class="cheer-column">
+      <div class="cheer-col-title">🍸 人格 B</div>
+      <div class="cheer-type-preview" id="cheer-preview-B">${State.cheersB.type || '----'}</div>
+      ${cheersSliderHTML('B')}
+      <button class="btn btn-outline cheer-picker-btn" onclick="toggleCheersPicker('B')">🎯 直选类型</button>
+      <div id="cheer-picker-B" class="type-picker hidden">
+        <p class="picker-label">选择人格 B 的类型</p>
+        <div class="type-grid" id="cheer-grid-B"></div>
+      </div>
+    </div>`;
+  const rs = document.getElementById('cheers-result-section');
+  rs.hidden = true;
+  document.getElementById('cheers-result').innerHTML = '';
+}
+
+window.onCheersSliderChange = function(side) {
+  const state = State['cheers' + side];
+  for (const pair of sliderPairs) {
+    const val = parseInt(document.getElementById(`cheer-${side}-${pair.id}`).value);
+    state.intensities[pair.left] = val;
+    state.intensities[pair.right] = 100 - val;
+    document.getElementById(`cheer-val-${side}-${pair.left}`).textContent = val + '%';
+    document.getElementById(`cheer-val-${side}-${pair.right}`).textContent = (100 - val) + '%';
+    document.getElementById(`cheer-fill-${side}-${pair.id}`).style.width = val + '%';
+  }
+  state.type = [
+    state.intensities.E >= state.intensities.I ? 'E' : 'I',
+    state.intensities.S >= state.intensities.N ? 'S' : 'N',
+    state.intensities.T >= state.intensities.F ? 'T' : 'F',
+    state.intensities.J >= state.intensities.P ? 'J' : 'P'
+  ].join('');
+  document.getElementById(`cheer-preview-${side}`).textContent = state.type;
+};
+
+window.toggleCheersPicker = function(side) {
+  const picker = document.getElementById(`cheer-picker-${side}`);
+  picker.classList.toggle('hidden');
+  if (picker.classList.contains('hidden')) return;
+  document.getElementById(`cheer-grid-${side}`).innerHTML = engine.getAllMBTITypes().map(t => {
+    const p = engine.getProfile(t);
+    return `<div class="type-cell" onclick="selectCheersType('${side}','${t}')" title="${p?.title || ''}">${t}</div>`;
+  }).join('');
+};
+
+window.selectCheersType = function(side, type) {
+  const state = State['cheers' + side];
+  const dims = type.split('');
+  const lefts = { EI: 'E', SN: 'S', TF: 'T', JP: 'J' };
+  for (const pair of sliderPairs) {
+    const left = lefts[pair.id];
+    const val = dims.includes(pair.right) ? 25 : 75; // 左侧值：选右侧字母→25，选左侧字母→75
+    state.intensities[left] = val;
+    state.intensities[pair.right] = 100 - val;
+    document.getElementById(`cheer-${side}-${pair.id}`).value = val;
+    document.getElementById(`cheer-val-${side}-${pair.left}`).textContent = val + '%';
+    document.getElementById(`cheer-val-${side}-${pair.right}`).textContent = (100 - val) + '%';
+    document.getElementById(`cheer-fill-${side}-${pair.id}`).style.width = val + '%';
+  }
+  state.type = type;
+  document.getElementById(`cheer-preview-${side}`).textContent = type;
+  document.getElementById(`cheer-picker-${side}`).classList.add('hidden');
+};
+
+function generateAndShowDuo() {
+  const a = State.cheersA, b = State.cheersB;
+  // 未操作过滑块/直选时，按当前默认 50/50 推导类型
+  if (!a.type) onCheersSliderChange('A');
+  if (!b.type) onCheersSliderChange('B');
+  const cocktail = engine.generateDuoCocktail(a.type, a.intensities, b.type, b.intensities, genHistoryNames(), { mythMode: State.mythEnabled });
+  State.generatedHistory.push({ name: cocktail.name, cocktail, ts: Date.now() });
+  State.duoCocktail = cocktail;
+  saveGenHistory();
+  document.getElementById('cheers-result').innerHTML = cocktailCard(cocktail, { ai: true });
+  document.getElementById('cheers-result-section').hidden = false;
+}
+
+window.generateDuo = function() {
+  generateAndShowDuo();
+  showToast('合体特调已就绪 🥂');
+};
+
+window.regenerateDuo = function() {
+  generateAndShowDuo();
   showToast('已生成全新配方 ✨');
 };
 
@@ -3215,6 +4452,11 @@ function renderDetail() {
   // 当前会话的 AI 酒
   if (State.aiCocktail && State.aiCocktail.id === id) {
     renderCocktailDetail(State.aiCocktail);
+    return;
+  }
+  // 当前会话的合体特调（v1.1 碰杯模式）
+  if (State.duoCocktail && State.duoCocktail.id === id) {
+    renderCocktailDetail(State.duoCocktail);
     return;
   }
   // 收藏里的 AI 酒（跨会话恢复）
@@ -3234,12 +4476,13 @@ function renderCocktailDetail(cocktail) {
   document.getElementById('detail-fav-btn').classList.toggle('active', isFav(id));
   document.getElementById('detail-fav-btn').textContent = isFav(id) ? '♥' : '♡';
   const isAI = cocktail._isGenerated;
+  const verdict = State.taste.verdicts[id] || 0;
 
   document.getElementById('detail-content').innerHTML = `
     <div class="detail-hero">
       <div class="detail-name">${cocktail.name}</div>
       <div class="detail-name-en">${cocktail.nameEn}</div>
-      ${isAI ? '<div class="ai-badge-inline">✨ AI 特调</div>' : ''}
+      ${isAI ? `<div class="ai-badge-inline">${cocktail._isDuo ? '🥂 合体特调' : '✨ AI 特调'}</div>` : ''}
       <div class="detail-info-row">
         <div class="detail-info-item"><div class="detail-info-value">${cocktail.strength}/5</div><div class="detail-info-label">烈度</div></div>
         <div class="detail-info-item"><div class="detail-info-value">${cocktail.sweetness}/5</div><div class="detail-info-label">甜度</div></div>
@@ -3249,8 +4492,18 @@ function renderCocktailDetail(cocktail) {
     </div>
     ${!isAI ? `<div class="detail-section"><div class="detail-section-title">关于这款酒</div><div class="detail-text">${cocktail.description}</div></div>` : ''}
     ${!isAI ? `<div class="detail-section"><div class="detail-section-title">背景故事</div><div class="detail-text">${cocktail.story}</div></div>` : ''}
-    <div class="detail-section"><div class="detail-section-title">配方材料</div>
+    <div class="detail-section"><div class="detail-section-title-row">
+      <div class="detail-section-title">配方材料</div>
+      <button class="copy-recipe-btn" onclick="copyRecipe()">📋 复制配方</button>
+    </div>
       ${cocktail.ingredients.map(i => `<div class="ingredient-row"><span class="ingredient-name">${i.name}</span><span class="ingredient-dots"></span><span class="ingredient-amount">${i.amount} ${i.unit}</span></div>`).join('')}
+    </div>
+    <div class="detail-section"><div class="detail-section-title">味觉档案</div>
+      <div class="taste-rate">
+        <button class="taste-btn up ${verdict === 1 ? 'active' : ''}" onclick="rateCocktail('${id}', 1)">👍 好喝</button>
+        <button class="taste-btn down ${verdict === -1 ? 'active' : ''}" onclick="rateCocktail('${id}', -1)">👎 不合口味</button>
+      </div>
+      <div class="taste-hint">你的反馈会小幅微调推荐排序（±5），越用越懂你；数据仅保存在本机</div>
     </div>
     <div class="detail-section"><div class="detail-section-title">调制技法</div>
       <div class="method-display">
@@ -3275,10 +4528,65 @@ window.toggleDetailFav = function() {
   showToast(isFav(id) ? '已收藏' : '已取消收藏');
 };
 
+// 味觉档案打分（v1.1）：👍/👎 单选可取消，实时更新按钮态并累积偏好向量
+window.rateCocktail = function(id, verdict) {
+  const cocktail = State._detailCocktail;
+  if (!cocktail || cocktail.id !== id) return;
+  const prev = State.taste.verdicts[id] || 0;
+  const next = prev === verdict ? 0 : verdict;
+  applyTasteVerdict(cocktail, next);
+  document.querySelector('.taste-btn.up')?.classList.toggle('active', next === 1);
+  document.querySelector('.taste-btn.down')?.classList.toggle('active', next === -1);
+  showToast(next === 1 ? '记下了：喜欢这口 🍸' : next === -1 ? '记下了：这口不合口味' : '已取消反馈');
+};
+
+// 一键复制配方文案（v1.1，PRD 7.2）：clipboard API 优先，file:// 等非安全上下文降级 execCommand
+function buildRecipeText(c) {
+  const lines = [
+    `🍸 ${c.name} ${c.nameEn || ''}`.trim(),
+    '─────────────',
+    ...(c.ingredients || []).map(i => `· ${i.name} ${i.amount}${i.unit}`),
+    '─────────────'
+  ];
+  if (c.garnish) lines.push(`装饰：${c.garnish}`);
+  if (c.methodLabel || c.method) lines.push(`技法：${c.methodLabel || c.method}`);
+  lines.push('—— 来自 MBTI Cocktail');
+  return lines.join('\n');
+}
+
+function writeClipboard(text) {
+  // 首选异步 Clipboard API（http:// 等安全上下文可用）
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(text).catch(() => execCommandCopy(text));
+  }
+  return Promise.resolve(execCommandCopy(text));
+}
+
+function execCommandCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch { ok = false; }
+  ta.remove();
+  return ok;
+}
+
+window.copyRecipe = function() {
+  const c = State._detailCocktail;
+  if (!c) return;
+  writeClipboard(buildRecipeText(c)).then(ok => {
+    showToast(ok !== false ? '配方已复制 📋' : '复制失败，请手动记录');
+  });
+};
+
 // 卡片心形一键收藏（PRD 4.6）
 window.toggleCardFav = function(id) {
   let cocktail = null;
   if (State.aiCocktail && State.aiCocktail.id === id) cocktail = State.aiCocktail;
+  else if (State.duoCocktail && State.duoCocktail.id === id) cocktail = State.duoCocktail;
   else {
     const f = State.favorites.find(x => x.type === 'ai' && x.cocktail.id === id);
     if (f) cocktail = f.cocktail;
@@ -3338,7 +4646,77 @@ function renderProfile() {
   } else {
     el.innerHTML = `<div style="text-align:center"><p style="color:var(--text-secondary);margin-bottom:12px">尚未设置 MBTI</p><button class="btn btn-outline" onclick="navigate('home')">去设置</button></div>`;
   }
+
+  renderProfileStats();
+  renderProfileCocktailBook();
+
+  // 设置区块：神话命名开关（v1.1）
+  const settingsEl = document.getElementById('profile-settings');
+  if (settingsEl) {
+    settingsEl.innerHTML = `
+      <div class="section-label">设置</div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-title">✨ 神话命名</div>
+          <div class="setting-desc">AI 特调以神话原型命名（如"哈迪斯之谋"），仅影响命名，不影响推荐结果</div>
+        </div>
+        <div class="toggle ${State.mythEnabled ? 'on' : ''}" onclick="toggleMythNaming()">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>`;
+  }
 }
+
+// 收藏统计 + 味觉档案反馈统计（v1.1，PRD 7.2 增强个人页）
+function renderProfileStats() {
+  const el = document.getElementById('profile-stats');
+  if (!el) return;
+  const favTotal = State.favorites.length;
+  const favAI = State.favorites.filter(f => f.type === 'ai').length;
+  const favClassic = favTotal - favAI;
+  let likeCount = 0, dislikeCount = 0;
+  for (const v of Object.values(State.taste.verdicts || {})) {
+    if (v === 1) likeCount++;
+    else if (v === -1) dislikeCount++;
+  }
+  const hasAny = favTotal > 0 || likeCount > 0 || dislikeCount > 0;
+  el.innerHTML = `
+    <div class="section-label">我的吧台</div>
+    <div class="stats-row">
+      <div class="stats-item"><div class="stats-num">${favTotal}</div><div class="stats-label">收藏</div></div>
+      <div class="stats-item"><div class="stats-num">${favClassic}</div><div class="stats-label">经典</div></div>
+      <div class="stats-item"><div class="stats-num">${favAI}</div><div class="stats-label">AI 特调</div></div>
+      <div class="stats-item"><div class="stats-num">${likeCount}<span class="stats-sub">👍</span></div><div class="stats-label">好喝</div></div>
+      <div class="stats-item"><div class="stats-num">${dislikeCount}<span class="stats-sub">👎</span></div><div class="stats-label">不合口味</div></div>
+    </div>
+    ${!hasAny ? '<p class="stats-empty">收藏和反馈会出现在这里，越用越懂你 🍸</p>' : ''}`;
+}
+
+// 人格酒单：AI 生成历史（含碰杯合体特调），最近 10 杯（v1.1，PRD 7.2）
+function renderProfileCocktailBook() {
+  const el = document.getElementById('profile-cocktailbook');
+  if (!el) return;
+  const history = State.generatedHistory.filter(h => h.cocktail).slice(-10).reverse(); // 最新在前
+  if (!history.length) {
+    el.innerHTML = `
+      <div class="section-label">🍸 人格酒单</div>
+      <div class="cocktailbook-empty">
+        <p>还没有专属特调。</p>
+        <button class="btn btn-outline" onclick="navigate('home')">去生成第一杯 AI 特调</button>
+      </div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="section-label">🍸 人格酒单 <span class="section-label-sub">最近 ${history.length} 杯</span></div>
+    ${history.map(h => cocktailCard(h.cocktail, h.cocktail._isGenerated ? { ai: true } : {})).join('')}`;
+}
+
+window.toggleMythNaming = function() {
+  State.mythEnabled = !State.mythEnabled;
+  saveMythSwitch();
+  if (State.route === 'profile') renderProfile();
+  showToast(State.mythEnabled ? '神话命名已开启 ✨' : '神话命名已关闭');
+};
 
 // ==================== 鸡尾酒卡片 ====================
 function cocktailCard(c, opts = {}) {
@@ -3346,7 +4724,7 @@ function cocktailCard(c, opts = {}) {
   const match = opts.match;
   return `
     <div class="cocktail-card ${isAI ? 'ai-card' : ''}" onclick="openDetail('${c.id}')">
-      ${isAI ? '<div class="ai-badge">✨ AI 特调</div>' : ''}
+      ${isAI ? `<div class="ai-badge">${c._isDuo ? '🥂 合体特调' : '✨ AI 特调'}</div>` : ''}
       <div class="card-header">
         <div><span class="card-name">${c.name}</span><span class="card-name-en">${c.nameEn}</span></div>
         <span class="card-fav ${isFav(c.id) ? 'active' : ''}" onclick="event.stopPropagation(); toggleCardFav('${c.id}')">${isFav(c.id) ? '♥' : '♡'}</span>
@@ -3372,6 +4750,7 @@ window.openDetail = function(id) {
   // AI 酒：当前会话的，或收藏里的（跨会话）
   let aiCocktail = null;
   if (State.aiCocktail && State.aiCocktail.id === id) aiCocktail = State.aiCocktail;
+  else if (State.duoCocktail && State.duoCocktail.id === id) aiCocktail = State.duoCocktail;
   else {
     const fav = State.favorites.find(f => f.type === 'ai' && f.cocktail.id === id);
     if (fav) aiCocktail = fav.cocktail;
@@ -3403,6 +4782,8 @@ function showToast(msg) {
 document.addEventListener('DOMContentLoaded', async () => {
   await loadFavs();
   loadGenHistory();
+  loadMythSwitch();
+  loadTaste();
   // 恢复上次滑块位置与类型（打开仍落在首页，仅恢复输入态）
   restoreLastState();
   if (State.intensities.E === 50) {

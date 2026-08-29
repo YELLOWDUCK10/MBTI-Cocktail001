@@ -10,7 +10,7 @@ import { MBTI_PROFILES } from './mbti-profiles.js';
 import {
   BASE_SPIRITS, ACIDIFIERS, SWEETENERS, MODIFIERS,
   MIXERS, BITTERS_SPICES, GARNISHES, FLAVOR_KEYWORDS,
-  FLAVOR_CONFLICTS, METHODS, GLASSES, inferColor
+  FLAVOR_CONFLICTS, MYTH_SUFFIXES, METHODS, GLASSES, inferColor
 } from './flavor-library.js';
 
 // ==================== 维度偏好映射（不变） ====================
@@ -174,25 +174,96 @@ function pickNoConflict(pool, usedFlavors, fallback = false) {
  * @param {string[]} history - 已生成的名称列表（去重用）
  * @returns {Object} 完整的鸡尾酒对象
  */
-export function generateCocktail(mbtiType, intensities, history = []) {
+export function generateCocktail(mbtiType, intensities, history = [], options = {}) {
+  const mythMode = options.mythMode !== false; // v1.1 神话命名开关，默认开
   const dims = parseType(mbtiType);
   let attempts = 0;
 
   while (attempts < 20) {
     attempts++;
-    const cocktail = tryGenerate(dims, intensities, mbtiType);
+    const cocktail = tryGenerate(dims, intensities, mbtiType, mythMode);
     if (!history.includes(cocktail.id) && !history.includes(cocktail.name)) {
       return cocktail;
     }
   }
   // 如果20次都重复（极小概率），强制加后缀
-  const c = tryGenerate(dims, intensities, mbtiType);
+  const c = tryGenerate(dims, intensities, mbtiType, mythMode);
   c.id += '-' + Date.now();
   c.name += ' ' + (history.length + 1);
   return c;
 }
 
-function tryGenerate(dims, intensities, mbtiType) {
+// ==================== 合体特调生成（v1.1 碰杯模式） ====================
+
+/**
+ * 双人合体 AI 特调：两组人格维度混合后复用现有生成管线（PRD 7.2 碰杯模式）
+ * 混合策略：逐维取平均；合体类型逐对取占比高侧（平局随机），仅用于结构/基酒偏好加权
+ * @param {string} typeA - 人格 A 类型（4 字母）
+ * @param {Object} intA - 人格 A 维度强度
+ * @param {string} typeB - 人格 B 类型
+ * @param {Object} intB - 人格 B 维度强度
+ * @param {string[]} history - 已生成名称列表（去重用）
+ * @param {Object} options - { mythMode }
+ * @returns {Object} 合体鸡尾酒对象（_isDuo + _duoInfo 标记）
+ */
+export function generateDuoCocktail(typeA, intA, typeB, intB, history = [], options = {}) {
+  const mythMode = options.mythMode !== false;
+
+  // 1. 维度混合：逐维取平均
+  const mixed = {};
+  for (const d of ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P']) {
+    mixed[d] = Math.round(((intA[d] ?? 50) + (intB[d] ?? 50)) / 2);
+  }
+
+  // 2. 合体类型：逐对维度取占比高侧，平局随机（符合 AI 特调"独一无二"）
+  const duoDims = [['E','I'], ['S','N'], ['T','F'], ['J','P']].map(([a, b]) => {
+    if (mixed[a] > mixed[b]) return a;
+    if (mixed[b] > mixed[a]) return b;
+    return Math.random() < 0.5 ? a : b;
+  });
+  const duoType = duoDims.join('');
+
+  const profileA = MBTI_PROFILES[typeA];
+  const profileB = MBTI_PROFILES[typeB];
+  const mythA = profileA?.myth || typeA;
+  const mythB = profileB?.myth || typeB;
+  const titleA = profileA?.title || typeA;
+  const titleB = profileB?.title || typeB;
+
+  // 3. 命名：体现两人格张力（神话开 → 双原型并列；关 → 双昵称并列）
+  const pickFlavorWord = () => pickRandom(FLAVOR_KEYWORDS[pickRandom(Object.keys(FLAVOR_KEYWORDS))]);
+  const duoName = () => mythMode
+    ? (Math.random() < 0.6
+        ? `${mythA} × ${mythB}${pickRandom(MYTH_SUFFIXES)}`
+        : `${mythA}与${mythB}的${pickFlavorWord()}`)
+    : `${titleA} × ${titleB}${pickRandom(['协奏曲', '变奏', '狂想', '回响', '序曲'])}`;
+
+  // 4. 完全复用单人装配管线（结构/基酒/配料/冲突检测），去重照常
+  let cocktail = null;
+  let attempts = 0;
+  while (attempts < 20) {
+    attempts++;
+    cocktail = tryGenerate(duoDims, mixed, duoType, mythMode);
+    cocktail.name = duoName();
+    if (!history.includes(cocktail.id) && !history.includes(cocktail.name)) break;
+  }
+  if (history.includes(cocktail.name) || history.includes(cocktail.id)) {
+    cocktail.id += '-duo-' + Date.now();
+    cocktail.name += ' ·碰杯 ' + (history.length + 1);
+  }
+
+  // 5. 覆写叙事层：双人叙事 + 双类型匹配
+  cocktail.nameEn = 'AI Duo: ' + cocktail.structure.charAt(0).toUpperCase() + cocktail.structure.slice(1);
+  cocktail.mbtiMatch = [typeA, typeB];
+  cocktail.description = `由 ${typeA}（${titleA}）与 ${typeB}（${titleB}）的人格张力共同调就，${cocktail.structure} 结构在两种气质之间寻找平衡。`;
+  cocktail.story = `这是一杯为 ${mythA}与${mythB} 碰杯而生的合体特调——两组人格维度混合后由风味引擎即兴演绎，每一次碰杯都是独一无二的配方。`;
+  cocktail.tags = [...new Set([...(cocktail.tags || []), '合体特调'])];
+  cocktail._isDuo = true;
+  cocktail._duoInfo = { typeA, typeB };
+  return cocktail;
+}
+
+function tryGenerate(dims, intensities, mbtiType, mythMode = true) {
   // 1. 选结构（根据维度偏好加权）
   const structureScores = {};
   for (const [sname] of Object.entries(STRUCTURE_TEMPLATES)) {
@@ -287,7 +358,7 @@ function tryGenerate(dims, intensities, mbtiType) {
   const flavorNotes = [...new Set(usedFlavors)].slice(0, 5);
 
   // 8. 命名
-  const name = generateName(mbtiType, flavorNotes, structure);
+  const name = generateName(mbtiType, flavorNotes, structure, mythMode);
 
   // 9. 难度
   const difficulty = ingredients.length <= 3 ? 1 : ingredients.length <= 5 ? 2 : 3;
@@ -322,7 +393,12 @@ function tryGenerate(dims, intensities, mbtiType) {
 }
 
 // ==================== 命名生成 ====================
-function generateName(mbtiType, flavorNotes, structure) {
+/**
+ * 生成酒款名称
+ * @param {boolean} mythMode - v1.1 神话命名开关：仅影响命名层，不影响评分与配方（PRD 7.2 设计边界）
+ *   双模式混搭：60% 神话式（哈迪斯之谋）+ 40% 混搭式（哈迪斯的暗涌）
+ */
+function generateName(mbtiType, flavorNotes, structure, mythMode = true) {
   const profile = MBTI_PROFILES[mbtiType];
   const title = profile?.title || mbtiType;
 
@@ -334,17 +410,61 @@ function generateName(mbtiType, flavorNotes, structure) {
   const suffixes = ['变奏', '特调', '协奏曲', '迷雾', '暗涌', '狂想', '回响', '序曲'];
   const suffix = pickRandom(suffixes);
 
+  if (mythMode && profile?.myth) {
+    return Math.random() < 0.6
+      ? profile.myth + pickRandom(MYTH_SUFFIXES)
+      : profile.myth + '的' + flavorWord;
+  }
   return title + flavorWord + suffix;
 }
 
 // ==================== 对外 API ====================
 
+// ==================== 味觉档案修正（v1.1 反向微调，PRD 7.2） ====================
+
+/**
+ * 根据用户味觉偏好向量计算单款酒的分数修正值（-5 ~ +5）
+ * 偏好向量按属性聚合（越用越懂你）：{ baseSpirit:{gin:2}, structure:{sour:1}, flavor:{花香:3} }
+ * 权重：基酒命中 ×1.5（|计数|封顶2）、结构命中 ×1.0（封顶2）、风味标签命中 ×0.5（命中数封顶2）
+ * @param {Object} cocktail
+ * @param {Object|null} taste - 偏好向量
+ * @returns {number} -5 ~ +5 的整数修正值
+ */
+export function applyTasteAdjust(cocktail, taste) {
+  if (!taste) return 0;
+  let adjust = 0;
+
+  const bs = taste.baseSpirit?.[cocktail.baseSpirit] || 0;
+  if (bs) adjust += Math.sign(bs) * Math.min(Math.abs(bs), 2) * 1.5;
+
+  const st = taste.structure?.[cocktail.structure] || 0;
+  if (st) adjust += Math.sign(st) * Math.min(Math.abs(st), 2) * 1.0;
+
+  const fl = taste.flavor || {};
+  let flavorHits = 0;
+  for (const f of (cocktail.flavorNotes || [])) {
+    const v = fl[f] || 0;
+    if (v) flavorHits += v > 0 ? 1 : -1;
+  }
+  adjust += Math.max(-2, Math.min(2, flavorHits)) * 0.5;
+
+  return Math.round(Math.max(-5, Math.min(5, adjust)));
+}
+
 export function getRecommendations(mbtiType, options = {}) {
   const intensities = options.intensities || null;
+  const taste = options.taste || null;   // v1.1 味觉档案
   const scored = COCKTAILS.map(cocktail => {
     const algorithmScore = calculateMatchScore(cocktail, mbtiType, intensities);
     const exactMatch = cocktail.mbtiMatch && cocktail.mbtiMatch.includes(mbtiType);
-    return { ...cocktail, _score: Math.min(99, Math.round(algorithmScore * (exactMatch ? 1.2 : 1.0))), _exact: exactMatch };
+    const base = Math.min(99, Math.round(algorithmScore * (exactMatch ? 1.2 : 1.0)));
+    const adjust = applyTasteAdjust(cocktail, taste);
+    return {
+      ...cocktail,
+      _score: Math.max(0, Math.min(99, base + adjust)),
+      _exact: exactMatch,
+      _tasteAdjust: adjust
+    };
   });
 
   // 全量已排序列表（分数降序，平分时 rating 高者在前），前端自行分页展示
@@ -361,6 +481,6 @@ export function getAllMethods() {
 }
 
 export default {
-  calculateMatchScore, getRecommendations, generateCocktail,
-  getProfile, getAllMBTITypes, getAllMethods
+  calculateMatchScore, getRecommendations, generateCocktail, generateDuoCocktail,
+  applyTasteAdjust, getProfile, getAllMBTITypes, getAllMethods
 };

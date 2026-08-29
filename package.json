@@ -1,6 +1,6 @@
 {
   "name": "mbti-cocktail",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "你的性格，你的酒 —— 基于MBTI人格匹配的本地单文件鸡尾酒应用",
   "scripts": {
     "build": "node build.js"

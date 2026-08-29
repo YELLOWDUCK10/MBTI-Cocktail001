@@ -53,8 +53,67 @@ function transformJs(fileName, code) {
   return out;
 }
 
+// ==================== 酒款数据库 schema 校验（v1.1 酒库扩充配套） ====================
+const STRUCTURE_ENUM = ['highball', 'sour', 'martini', 'old-fashioned', 'fizz', 'collins', 'manhattan', 'margarita', 'tiki', 'cream'];
+const BASE_SPIRIT_ENUM = ['gin', 'vodka', 'rum', 'whiskey', 'tequila'];
+const METHOD_ENUM = ['shake', 'stir', 'build', 'muddle', 'dry-shake', 'blend'];
+const CATEGORY_ENUM = ['classic', 'tropical', 'modern', 'spirit-forward', 'creamy'];
+const MBTI_TYPES = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+const REQUIRED_FIELDS = ['id','name','nameEn','category','glass','structure','baseSpirit','strength','sweetness','abv','color','difficulty','rating','mbtiMatch','description','story','method','methodLabel','ingredients','garnish','flavorNotes','scene','tags'];
+
+function inRange(v, min, max) { return Number.isFinite(v) && v >= min && v <= max; }
+
+function validateCocktails() {
+  // cocktails.js 无 import，转换后可直接执行取到 COCKTAILS 数组
+  const code = transformJs('cocktails.js', fs.readFileSync(path.join(SRC, 'cocktails.js'), 'utf8'));
+  const cocktails = new Function(code + '\nreturn COCKTAILS;')();
+  const errors = [];
+  const ids = new Set();
+
+  for (const c of cocktails) {
+    const tag = c.id || '(无id)';
+    for (const f of REQUIRED_FIELDS) {
+      if (c[f] === undefined || c[f] === null || c[f] === '') errors.push(`[${tag}] 缺少字段 ${f}`);
+    }
+    if (!c.id) continue;
+    if (ids.has(c.id)) errors.push(`[${c.id}] id 重复`);
+    ids.add(c.id);
+
+    for (const [f, allowed] of Object.entries({ structure: STRUCTURE_ENUM, baseSpirit: BASE_SPIRIT_ENUM, method: METHOD_ENUM, category: CATEGORY_ENUM })) {
+      if (c[f] !== undefined && !allowed.includes(c[f])) errors.push(`[${c.id}] ${f} 非法值 "${c[f]}"（允许：${allowed.join('/')}）`);
+    }
+    if (!inRange(c.strength, 1, 5)) errors.push(`[${c.id}] strength 超出 1-5`);
+    if (!inRange(c.sweetness, 1, 5)) errors.push(`[${c.id}] sweetness 超出 1-5`);
+    if (!inRange(c.difficulty, 1, 3)) errors.push(`[${c.id}] difficulty 超出 1-3`);
+    if (!inRange(c.rating, 1, 5)) errors.push(`[${c.id}] rating 超出 1-5`);
+    if (!Number.isFinite(c.abv) || c.abv < 0) errors.push(`[${c.id}] abv 非法`);
+    if (Array.isArray(c.mbtiMatch)) {
+      for (const t of c.mbtiMatch) {
+        if (!MBTI_TYPES.includes(t)) errors.push(`[${c.id}] mbtiMatch 含非法类型 "${t}"`);
+      }
+    }
+    if (!Array.isArray(c.ingredients) || c.ingredients.length === 0) {
+      errors.push(`[${c.id}] ingredients 为空`);
+    } else {
+      c.ingredients.forEach((ing, i) => {
+        for (const f of ['name', 'amount', 'unit', 'category']) {
+          if (ing[f] === undefined) errors.push(`[${c.id}] ingredients[${i}] 缺少 ${f}`);
+        }
+      });
+    }
+    for (const f of ['mbtiMatch', 'flavorNotes', 'scene', 'tags']) {
+      if (!Array.isArray(c[f])) errors.push(`[${c.id}] ${f} 应为数组`);
+    }
+  }
+
+  if (cocktails.length !== 50) errors.push(`酒款总数 ${cocktails.length} ≠ 50`);
+  if (errors.length) throw new Error('酒款数据库校验失败：\n  - ' + errors.join('\n  - '));
+  console.log(`✔ 数据校验通过: ${cocktails.length} 款酒`);
+}
+
 function build() {
   const t0 = Date.now();
+  validateCocktails();
 
   // 读取 HTML 骨架
   let html = fs.readFileSync(path.join(SRC, 'index.html'), 'utf8');
